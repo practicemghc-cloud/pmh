@@ -1,0 +1,196 @@
+/**
+ * Animations for the pre-launch holding page (`/coming-soon`).
+ * Kept out of globals.css so the design-token layer stays clean.
+ * Colour references use the Figma tokens defined in globals.css.
+ */
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.75;
+  }
+  70% {
+    opacity: 0.15;
+  }
+  100% {
+    transform: scale(1.55);
+    opacity: 0;
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1) translate3d(0, 0, 0);
+    opacity: 0.45;
+  }
+  50% {
+    transform: scale(1.1) translate3d(2%, -2%, 0);
+    opacity: 0.7;
+  }
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  33% {
+    transform: translate3d(4%, -3%, 0) scale(1.05);
+  }
+  66% {
+    transform: translate3d(-3%, 2%, 0) scale(0.97);
+  }
+}
+
+@keyframes aurora-shift {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    opacity: 0.65;
+    transform: translate3d(1.5%, 2%, 0) scale(1.04);
+  }
+}
+
+@keyframes sheen {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: translateX(-3%) rotate(-8deg);
+  }
+  50% {
+    opacity: 0.45;
+    transform: translateX(3%) rotate(-8deg);
+  }
+}
+
+@keyframes logo-beat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  8% {
+    transform: scale(1.04);
+  }
+  16% {
+    transform: scale(1);
+  }
+}
+
+@keyframes mint-glow {
+  0%,
+  100% {
+    text-shadow: 0 0 0 transparent;
+    filter: brightness(1);
+  }
+  50% {
+    text-shadow: 0 0 28px color-mix(in srgb, var(--color-mint) 45%, transparent);
+    filter: brightness(1.08);
+  }
+}
+
+@keyframes ecg-trace {
+  0% {
+    stroke-dashoffset: 960;
+    opacity: 0.25;
+  }
+  8% {
+    opacity: 1;
+  }
+  55% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  75% {
+    opacity: 0.55;
+  }
+  100% {
+    stroke-dashoffset: -960;
+    opacity: 0.2;
+  }
+}
+
+@keyframes ecg-sweep {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -1000;
+  }
+}
+
+@keyframes orb-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -18px, 0);
+  }
+}
+
+.pulse-ring {
+  animation: pulse-ring 3.6s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+.pulse-ring-delay-1 {
+  animation-delay: 1.2s;
+}
+.pulse-ring-delay-2 {
+  animation-delay: 2.4s;
+}
+.breathe {
+  animation: breathe 9s ease-in-out infinite;
+}
+.drift {
+  animation: drift 16s ease-in-out infinite;
+}
+.aurora-shift {
+  animation: aurora-shift 10s ease-in-out infinite;
+}
+.sheen {
+  animation: sheen 14s ease-in-out infinite;
+}
+.logo-beat {
+  animation: logo-beat 3.6s ease-in-out infinite;
+}
+.mint-glow {
+  animation: mint-glow 3.2s ease-in-out infinite;
+  animation-delay: 1.6s;
+}
+.ecg-path {
+  stroke-dasharray: 960;
+  stroke-dashoffset: 960;
+  animation: ecg-trace 2.8s ease-in-out infinite;
+}
+.ecg-sweep {
+  stroke-dasharray: 70 930;
+  stroke-dashoffset: 0;
+  animation: ecg-sweep 2.8s linear infinite;
+  filter: drop-shadow(0 0 6px var(--color-mint));
+}
+.orb-float {
+  animation: orb-float 5.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse-ring,
+  .breathe,
+  .drift,
+  .aurora-shift,
+  .sheen,
+  .logo-beat,
+  .mint-glow,
+  .ecg-path,
+  .ecg-sweep,
+  .orb-float {
+    animation: none;
+  }
+
+  .ecg-path {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}

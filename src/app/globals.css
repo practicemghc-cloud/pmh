@@ -1,240 +1,204 @@
 @import "tailwindcss";
+@import "../styles/coming-soon.css";
 
-:root {
-  --pmg-primary: #3d6763;
-  --pmg-primary-deep: #2a4a47;
-  --pmg-ink: #1e3532;
-  --pmg-mint: #5cc78d;
-  --pmg-sage: #bfc9bc;
-  --pmg-mist: #e8eee9;
-  --pmg-glow: color-mix(in srgb, var(--pmg-mint) 35%, transparent);
+/* ---------------------------------------------------------------------------
+   Design tokens — mirrored 1:1 from the Figma variable collection (PMG · High Fi).
+   Figma name          ->  CSS custom property
+   color/mint          ->  --color-mint            (utility: bg-mint, text-mint, …)
+   shadow/nav          ->  --shadow-nav            (utility: shadow-nav)
+   Keep these in sync with `get_variable_defs` on the Figma file.
+--------------------------------------------------------------------------- */
 
-  --background: var(--pmg-primary);
-  --foreground: var(--pmg-mist);
+@theme {
+  /* -- Brand ------------------------------------------------------------- */
+  --color-mint: #5cc78d;
+  --color-mint-light: #a8e8c4;
+
+  /* -- Sage (deep brand green) ------------------------------------------- */
+  --color-sage: #3d6763;
+  --color-sage-tint: #4e7f7a;
+  --color-sage-dark: #24413e;
+  --color-on-sage: #dce4db;
+
+  /* -- Ink (text) -------------------------------------------------------- */
+  --color-ink: #111111;
+  --color-ink-muted: #4e5955;
+  --color-ink-deep: #0e1917;
+
+  /* -- Surfaces ---------------------------------------------------------- */
+  --color-off-white: #f5f7f4;
+  --color-surface-2: #eaeee8;
+  --color-line: #d3d9d0;
+  --color-field-line: #7e8b86;
+  --color-pastel: #bfc9bc;
+
+  /* -- Status ------------------------------------------------------------ */
+  --color-good-bg: #e4f6ec;
+  --color-warning: #8a5a0b;
+  --color-warning-bg: #fbf1e3;
+  --color-error: #b3261e;
+  --color-error-bg: #fceeed;
+
+  /* -- Elevation --------------------------------------------------------- */
+  --shadow-xs: 0 1px 2px 0 rgb(10 26 23 / 0.04);
+  --shadow-sm: 0 1px 2px 0 rgb(10 26 23 / 0.04), 0 3px 8px -3px rgb(10 26 23 / 0.06);
+  --shadow-md: 0 1px 2px 0 rgb(10 26 23 / 0.04), 0 5px 12px -4px rgb(10 26 23 / 0.06),
+    0 12px 24px -12px rgb(10 26 23 / 0.06);
+  --shadow-lg: 0 2px 4px 0 rgb(10 26 23 / 0.05), 0 8px 20px -8px rgb(10 26 23 / 0.09),
+    0 20px 40px -18px rgb(10 26 23 / 0.07);
+  --shadow-nav: 0 1px 2px 0 rgb(10 26 23 / 0.04), 0 6px 16px -8px rgb(10 26 23 / 0.07);
+  --shadow-cta: 0 3px 10px -3px rgb(41 140 89 / 0.26);
+
+  /* -- Radii (Figma corner radii) ---------------------------------------- */
+  --radius-chip: 15px;
+  --radius-card: 22px;
+  --radius-card-lg: 26px;
+  --radius-panel: 36px;
+
+  /* -- Type scale (sizes observed in the High Fi frames) ----------------- */
+  --text-hero: 60px;
+  --text-hero--line-height: 1.02;
+  --text-hero--letter-spacing: -0.03em;
+  --text-display: 54px;
+  --text-display--line-height: 1.08;
+  --text-display--letter-spacing: -0.03em;
+  --text-stat: 42px;
+  --text-stat--line-height: 1;
+  --text-stat--letter-spacing: -0.03em;
+  --text-eyebrow: 12px;
+  --text-eyebrow--line-height: 1.2;
+  --text-eyebrow--letter-spacing: 0.12em;
+
+  /* -- Layout ------------------------------------------------------------ */
+  /* The Figma artboard is 1440 wide with 80px gutters (a 1280 content
+     column). The site widens that to a 1600 content column on large screens
+     so it doesn't strand whitespace on wide monitors — text blocks keep the
+     max-widths taken from the design, so only the layout spreads.
+     `frame` = content + the 2x80px gutters, for the full-bleed stages. */
+  --container-content: 1600px;
+  --container-frame: 1760px;
+
+  /* -- Fonts ------------------------------------------------------------- */
+  --font-sans: var(--font-urbanist), ui-sans-serif, system-ui, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-pmg-primary: var(--pmg-primary);
-  --color-pmg-primary-deep: var(--pmg-primary-deep);
-  --color-pmg-ink: var(--pmg-ink);
-  --color-pmg-mint: var(--pmg-mint);
-  --color-pmg-sage: var(--pmg-sage);
-  --color-pmg-mist: var(--pmg-mist);
-  --font-sans: var(--font-urbanist);
-  --font-display: var(--font-urbanist);
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-urbanist), system-ui, sans-serif;
-}
-
-::selection {
-  background: color-mix(in srgb, var(--pmg-mint) 40%, transparent);
-  color: var(--pmg-ink);
-}
-
-@keyframes pulse-ring {
-  0% {
-    transform: scale(0.85);
-    opacity: 0.75;
+@layer base {
+  html {
+    /* Lenis owns wheel smoothing; native smooth behaviour fights its
+       programmatic scrollTo. Anchors are eased by Lenis instead — and when it
+       is skipped (reduced motion) they jump, which is the right behaviour
+       there. scroll-padding keeps those native jumps clear of the fixed nav
+       and the sticky Services tab strip. */
+    scroll-behavior: auto;
+    scroll-padding-top: 120px;
   }
-  70% {
-    opacity: 0.15;
+
+  /* Lenis' own hooks. */
+  html.lenis {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  body {
+    background: var(--color-off-white);
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--color-mint) 40%, transparent);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-sage);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Scroll-reveal start states.
+
+   Gated behind `.js-motion`, which an inline script in the root layout adds
+   before the first paint. So: no JS -> nothing is ever hidden; reduced motion
+   -> the media query below hands everything straight back. If the motion
+   runtime never loads, that same script drops the class after 2.5s, so a
+   failed chunk can never leave the page blank.
+
+   The tweens use fromTo with explicit resting values (see stage.ts) because
+   `from()` would read these hidden values as the destination.
+--------------------------------------------------------------------------- */
+
+.js-motion [data-reveal] {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js-motion [data-reveal] {
+    opacity: 1;
+  }
+}
+
+/* SplitText's line masks clip to the exact line box, which shears descenders
+   at the display sizes. Grow each line a little and pull the extra back out of
+   the layout so nothing shifts. */
+.split-line {
+  padding-bottom: 0.16em;
+  margin-bottom: -0.16em;
+}
+
+/* ---------------------------------------------------------------------------
+   Closing CTA — looping radar pulse.
+
+   Replaces the three static arcs from the Figma export with rings that expand
+   from the same origin (centred below the card, matching the exported circles'
+   cx/cy) and fade out on a loop.
+
+   `scale` is animated as its own property rather than inside `transform`, so
+   the -50%/-50% centring transform stays put and the two don't fight.
+--------------------------------------------------------------------------- */
+
+@keyframes cta-pulse {
+  0% {
+    scale: 0.18;
+    opacity: 0;
+  }
+  9% {
+    opacity: 0.6;
+  }
+  65% {
+    opacity: 0.2;
   }
   100% {
-    transform: scale(1.55);
+    scale: 1.55;
     opacity: 0;
   }
 }
 
-@keyframes breathe {
-  0%,
-  100% {
-    transform: scale(1) translate3d(0, 0, 0);
-    opacity: 0.45;
-  }
-  50% {
-    transform: scale(1.1) translate3d(2%, -2%, 0);
-    opacity: 0.7;
-  }
-}
-
-@keyframes drift {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  33% {
-    transform: translate3d(4%, -3%, 0) scale(1.05);
-  }
-  66% {
-    transform: translate3d(-3%, 2%, 0) scale(0.97);
-  }
-}
-
-@keyframes aurora-shift {
-  0%,
-  100% {
-    opacity: 0.4;
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  50% {
-    opacity: 0.65;
-    transform: translate3d(1.5%, 2%, 0) scale(1.04);
-  }
-}
-
-@keyframes sheen {
-  0%,
-  100% {
-    opacity: 0.25;
-    transform: translateX(-3%) rotate(-8deg);
-  }
-  50% {
-    opacity: 0.45;
-    transform: translateX(3%) rotate(-8deg);
-  }
-}
-
-@keyframes logo-beat {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  8% {
-    transform: scale(1.04);
-  }
-  16% {
-    transform: scale(1);
-  }
-}
-
-@keyframes mint-glow {
-  0%,
-  100% {
-    text-shadow: 0 0 0 transparent;
-    filter: brightness(1);
-  }
-  50% {
-    text-shadow: 0 0 28px color-mix(in srgb, var(--pmg-mint) 45%, transparent);
-    filter: brightness(1.08);
-  }
-}
-
-@keyframes ecg-trace {
-  0% {
-    stroke-dashoffset: 960;
-    opacity: 0.25;
-  }
-  8% {
-    opacity: 1;
-  }
-  55% {
-    stroke-dashoffset: 0;
-    opacity: 1;
-  }
-  75% {
-    opacity: 0.55;
-  }
-  100% {
-    stroke-dashoffset: -960;
-    opacity: 0.2;
-  }
-}
-
-@keyframes ecg-sweep {
-  0% {
-    stroke-dashoffset: 0;
-  }
-  100% {
-    stroke-dashoffset: -1000;
-  }
-}
-
-@keyframes orb-float {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-  50% {
-    transform: translate3d(0, -18px, 0);
-  }
-}
-
-.pulse-ring {
-  animation: pulse-ring 3.6s cubic-bezier(0.22, 1, 0.36, 1) infinite;
-}
-
-.pulse-ring-delay-1 {
-  animation-delay: 1.2s;
-}
-
-.pulse-ring-delay-2 {
-  animation-delay: 2.4s;
-}
-
-.breathe {
-  animation: breathe 9s ease-in-out infinite;
-}
-
-.drift {
-  animation: drift 16s ease-in-out infinite;
-}
-
-.aurora-shift {
-  animation: aurora-shift 10s ease-in-out infinite;
-}
-
-.sheen {
-  animation: sheen 14s ease-in-out infinite;
-}
-
-.logo-beat {
-  animation: logo-beat 3.6s ease-in-out infinite;
-}
-
-.mint-glow {
-  animation: mint-glow 3.2s ease-in-out infinite;
-  animation-delay: 1.6s;
-}
-
-.ecg-path {
-  stroke-dasharray: 960;
-  stroke-dashoffset: 960;
-  animation: ecg-trace 2.8s ease-in-out infinite;
-}
-
-.ecg-sweep {
-  stroke-dasharray: 70 930;
-  stroke-dashoffset: 0;
-  animation: ecg-sweep 2.8s linear infinite;
-  filter: drop-shadow(0 0 6px var(--pmg-mint));
-}
-
-.orb-float {
-  animation: orb-float 5.5s ease-in-out infinite;
+.cta-pulse {
+  /* Eases outward like a real pulse rather than travelling at a constant rate. */
+  animation: cta-pulse 10s cubic-bezier(0.16, 0.84, 0.44, 1) infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pulse-ring,
-  .breathe,
-  .drift,
-  .aurora-shift,
-  .sheen,
-  .logo-beat,
-  .mint-glow,
-  .ecg-path,
-  .ecg-sweep,
-  .orb-float {
+  /* Hold the rings still rather than removing the texture entirely. */
+  .cta-pulse {
     animation: none;
-  }
-
-  .ecg-path {
-    stroke-dashoffset: 0;
-    opacity: 1;
+    scale: 1;
+    opacity: 0.28;
   }
 }

@@ -46,14 +46,14 @@ export default function ComingSoon() {
   };
 
   return (
-    <div className="relative flex min-h-dvh flex-col overflow-hidden bg-pmg-primary text-pmg-mist">
+    <div className="relative flex min-h-dvh flex-col overflow-hidden bg-sage text-surface-2">
       <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_120%_90%_at_50%_110%,var(--pmg-ink)_0%,var(--pmg-primary)_55%,color-mix(in_srgb,var(--pmg-primary)_85%,var(--pmg-mint))_100%)]" />
-        <div className="aurora-shift absolute left-1/2 top-[20%] h-[60vmax] w-[60vmax] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,color-mix(in_srgb,var(--pmg-mint)_28%,transparent)_0%,transparent_65%)] blur-3xl" />
-        <div className="sheen absolute -left-[20%] top-[-10%] h-[140%] w-[50%] bg-[linear-gradient(105deg,transparent_25%,color-mix(in_srgb,var(--pmg-mist)_8%,transparent)_50%,transparent_75%)] blur-3xl" />
-        <div className="drift absolute -left-[18%] top-[8%] h-[50vmax] w-[50vmax] rounded-full bg-[radial-gradient(circle,color-mix(in_srgb,var(--pmg-sage)_26%,transparent)_0%,transparent_70%)] blur-3xl" />
-        <div className="breathe absolute -right-[14%] bottom-[-10%] h-[48vmax] w-[48vmax] rounded-full bg-[radial-gradient(circle,color-mix(in_srgb,var(--pmg-mint)_24%,transparent)_0%,transparent_72%)] blur-3xl" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_70%_at_50%_45%,transparent_40%,color-mix(in_srgb,var(--pmg-ink)_35%,transparent)_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_120%_90%_at_50%_110%,var(--color-ink-deep)_0%,var(--color-sage)_55%,color-mix(in_srgb,var(--color-sage)_85%,var(--color-mint))_100%)]" />
+        <div className="aurora-shift absolute left-1/2 top-[20%] h-[60vmax] w-[60vmax] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,color-mix(in_srgb,var(--color-mint)_28%,transparent)_0%,transparent_65%)] blur-3xl" />
+        <div className="sheen absolute -left-[20%] top-[-10%] h-[140%] w-[50%] bg-[linear-gradient(105deg,transparent_25%,color-mix(in_srgb,var(--color-surface-2)_8%,transparent)_50%,transparent_75%)] blur-3xl" />
+        <div className="drift absolute -left-[18%] top-[8%] h-[50vmax] w-[50vmax] rounded-full bg-[radial-gradient(circle,color-mix(in_srgb,var(--color-pastel)_26%,transparent)_0%,transparent_70%)] blur-3xl" />
+        <div className="breathe absolute -right-[14%] bottom-[-10%] h-[48vmax] w-[48vmax] rounded-full bg-[radial-gradient(circle,color-mix(in_srgb,var(--color-mint)_24%,transparent)_0%,transparent_72%)] blur-3xl" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_70%_at_50%_45%,transparent_40%,color-mix(in_srgb,var(--color-ink-deep)_35%,transparent)_100%)]" />
       </div>
 
       <motion.main
@@ -69,15 +69,15 @@ export default function ComingSoon() {
           >
             <span
               aria-hidden
-              className="pulse-ring absolute inset-[8%] rounded-full border-2 border-pmg-mist/60"
+              className="pulse-ring absolute inset-[8%] rounded-full border-2 border-surface-2/60"
             />
             <span
               aria-hidden
-              className="pulse-ring pulse-ring-delay-1 absolute inset-[8%] rounded-full border-2 border-pmg-mint/65"
+              className="pulse-ring pulse-ring-delay-1 absolute inset-[8%] rounded-full border-2 border-mint/65"
             />
             <span
               aria-hidden
-              className="pulse-ring pulse-ring-delay-2 absolute inset-[8%] rounded-full border-2 border-pmg-sage/55"
+              className="pulse-ring pulse-ring-delay-2 absolute inset-[8%] rounded-full border-2 border-pastel/55"
             />
             <div className="logo-beat relative z-10 flex h-[4.75rem] w-[14rem] items-center justify-center sm:h-24 sm:w-[17rem]">
               <Image
@@ -90,14 +90,14 @@ export default function ComingSoon() {
           </motion.div>
 
           <motion.h1
-            className="font-display text-[clamp(2.6rem,8vw,5.25rem)] font-medium leading-[0.95] tracking-[-0.03em] text-pmg-mist"
+            className="font-sans text-[clamp(2.6rem,8vw,5.25rem)] font-medium leading-[0.95] tracking-[-0.03em] text-surface-2"
             variants={fadeUp}
           >
             <motion.span className="block" variants={lineReveal}>
               Care is
             </motion.span>
             <motion.span
-              className="mint-glow block text-pmg-mint"
+              className="mint-glow block text-mint"
               variants={lineReveal}
             >
               on the way.
@@ -111,7 +111,7 @@ export default function ComingSoon() {
             <svg
               viewBox="0 0 480 48"
               fill="none"
-              className="mx-auto h-10 w-full text-pmg-mint"
+              className="mx-auto h-10 w-full text-mint"
               aria-hidden
             >
               <path
@@ -142,7 +142,7 @@ export default function ComingSoon() {
           </motion.div>
 
           <motion.p
-            className="mt-8 max-w-lg text-balance text-lg font-medium leading-snug text-pmg-sage sm:text-xl"
+            className="mt-8 max-w-lg text-balance text-lg font-medium leading-snug text-pastel sm:text-xl"
             variants={fadeUp}
           >
             A new home for our healthcare family —
