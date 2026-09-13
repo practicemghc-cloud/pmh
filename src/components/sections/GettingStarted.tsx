@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState, useSyncExternalStore } from "react";
 import { cn } from "@/lib/cn";
 import { Icon } from "@/components/ui/Icon";
+import { Button } from "@/components/ui/Button";
 import { StepperStage } from "@/components/motion/stages/StepperStage";
 import { MaskHeading } from "@/components/motion/MaskHeading";
 
@@ -11,24 +12,55 @@ import { MaskHeading } from "@/components/motion/MaskHeading";
  * with the three sibling state frames supplying steps 02–04
  * (88:2470 / 88:2532 / 88:2598).
  *
- * The asset panels are illustrations of the process, not working controls —
- * they are rendered as static markup so nothing looks clickable that isn't.
+ * The asset panels are illustrations of the process, not working controls.
+ * Rendering them as static mock-ups of real UI backfired: people tried to book
+ * a call by clicking the calendar. Each panel now plays its own step through on
+ * a loop, which reads as a recording rather than something waiting for input,
+ * and the whole zone is inert (`pointer-events-none`, aria-hidden) under a line
+ * of text that says so.
  */
+
+/**
+ * Drives one panel's demo: a step index that advances on a timer and starts
+ * over. Under reduced motion it holds the finished state instead, so the panel
+ * still shows the whole story without moving.
+ *
+ * Read off the clock through `useSyncExternalStore` rather than kept in state
+ * and pushed from an effect: the step is derived data, the timer only says
+ * when to look again, and panels that mount at different moments stay in step
+ * with each other.
+ */
+function useDemoStep(count: number, intervalMs: number) {
+  const subscribe = useCallback(
+    (onChange: () => void) => {
+      const id = window.setInterval(onChange, intervalMs);
+      return () => window.clearInterval(id);
+    },
+    [intervalMs],
+  );
+
+  const getSnapshot = useCallback(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return count - 1;
+    return Math.floor(Date.now() / intervalMs) % count;
+  }, [count, intervalMs]);
+
+  // The server has no clock to read; it renders the first frame.
+  return useSyncExternalStore(subscribe, getSnapshot, () => 0);
+}
 
 /** Step 01 — "Asset — booking (built)" (88:2359). */
 function BookingAsset() {
   const days = [
-    { day: "Mon", date: "8", active: false },
-    { day: "Tue", date: "9", active: true },
-    { day: "Wed", date: "10", active: false },
-    { day: "Thu", date: "11", active: false },
+    { day: "Mon", date: "8" },
+    { day: "Tue", date: "9" },
+    { day: "Wed", date: "10" },
+    { day: "Thu", date: "11" },
   ];
-  const slots = [
-    { time: "09:00", active: false },
-    { time: "11:30", active: true },
-    { time: "14:00", active: false },
-    { time: "16:30", active: false },
-  ];
+  const slots = ["09:00", "11:30", "14:00", "16:30"];
+
+  // The highlight walks the week, then the times — a call being found, not a
+  // slot picker sitting there waiting to be tapped.
+  const cursor = useDemoStep(days.length, 1500);
 
   return (
     <>
@@ -43,44 +75,47 @@ function BookingAsset() {
       </div>
 
       <div aria-hidden className="flex w-full gap-[8px]">
-        {days.map((d) => (
-          <div
-            key={d.day}
-            className={cn(
-              "flex flex-1 flex-col items-center justify-center gap-[2px] rounded-[14px] py-[12px]",
-              d.active ? "bg-sage" : "bg-white",
-            )}
-          >
-            <span
+        {days.map((d, index) => {
+          const active = index === cursor;
+          return (
+            <div
+              key={d.day}
               className={cn(
-                "text-[11px] font-medium leading-[1.2]",
-                d.active ? "text-mint-light" : "text-ink-muted",
+                "flex flex-1 flex-col items-center justify-center gap-[2px] rounded-[14px] py-[12px] transition-colors duration-500",
+                active ? "bg-sage" : "bg-white",
               )}
             >
-              {d.day}
-            </span>
-            <span
-              className={cn(
-                "text-[18px] font-semibold leading-[1.2] tracking-[-0.01em]",
-                d.active ? "text-white" : "text-ink",
-              )}
-            >
-              {d.date}
-            </span>
-          </div>
-        ))}
+              <span
+                className={cn(
+                  "text-[11px] font-medium leading-[1.2] transition-colors duration-500",
+                  active ? "text-mint-light" : "text-ink-muted",
+                )}
+              >
+                {d.day}
+              </span>
+              <span
+                className={cn(
+                  "text-[18px] font-semibold leading-[1.2] tracking-[-0.01em] transition-colors duration-500",
+                  active ? "text-white" : "text-ink",
+                )}
+              >
+                {d.date}
+              </span>
+            </div>
+          );
+        })}
       </div>
 
       <div aria-hidden className="flex w-full flex-wrap gap-[8px]">
-        {slots.map((s) => (
+        {slots.map((time, index) => (
           <div
-            key={s.time}
+            key={time}
             className={cn(
-              "flex flex-1 items-center justify-center rounded-full py-[11px] text-[13px] font-semibold leading-[1.2]",
-              s.active ? "bg-mint text-ink" : "bg-white text-ink-muted",
+              "flex flex-1 items-center justify-center rounded-full py-[11px] text-[13px] font-semibold leading-[1.2] transition-colors duration-500",
+              index === cursor ? "bg-mint text-ink" : "bg-white text-ink-muted",
             )}
           >
-            {s.time}
+            {time}
           </div>
         ))}
       </div>
@@ -104,13 +139,22 @@ function BookingAsset() {
 
 /** Step 02 — "Select your services" (88:2501). */
 function ServiceSelectAsset() {
+  // All eight, in the running order the rest of the site uses — the panel is a
+  // picture of choosing from the actual menu, so a short list read as though
+  // three of them were missing.
   const rows = [
-    { label: "Billing & Collection", added: true },
-    { label: "Practice Management Operations", added: true },
-    { label: "Medical Coding & Reporting", added: false },
-    { label: "International Patient Services", added: false },
-    { label: "Marketing & Digital Growth", added: false },
+    "Practice Management Operations",
+    "Medical Referral",
+    "Medical Billing & Collections",
+    "Embassy Registration & Onboarding",
+    "Medical Coding & Reporting",
+    "Medical Transcription",
+    "Marketing & Digital Growth",
+    "Tax & Accounting",
   ];
+
+  // Services tick on one at a time, hold, then clear and run again.
+  const ticked = Math.min(useDemoStep(rows.length + 3, 620), rows.length);
 
   return (
     <>
@@ -119,34 +163,53 @@ function ServiceSelectAsset() {
           Select your services
         </p>
         <span className="rounded-full bg-good-bg px-[11px] py-[6px] text-[11px] font-semibold leading-[1.2] text-sage-dark">
-          2 selected
+          {ticked} selected
         </span>
       </div>
 
-      <ul aria-hidden className="flex w-full flex-col gap-[8px]">
-        {rows.map((row) => (
-          <li
-            key={row.label}
-            className="flex items-center gap-[12px] rounded-[12px] bg-white px-[14px] py-[12px]"
-          >
-            {row.added ? (
-              <Icon name="check-circle" className="text-mint" />
-            ) : (
-              <span className="size-[20px] shrink-0 rounded-full border-[1.75px] border-line" />
-            )}
-            <span
-              className={cn(
-                "flex-1 text-[14px] leading-[1.4]",
-                row.added ? "font-semibold text-ink" : "text-ink-muted",
-              )}
+      <ul aria-hidden className="grid w-full grid-cols-1 gap-[8px] sm:grid-cols-2">
+        {rows.map((row, index) => {
+          const added = index < ticked;
+          return (
+            <li
+              key={row}
+              className="flex items-center gap-[10px] rounded-[12px] bg-white px-[13px] py-[11px]"
             >
-              {row.label}
-            </span>
-            {row.added && (
-              <span className="text-[11px] font-semibold leading-[1.2] text-sage">Added</span>
-            )}
-          </li>
-        ))}
+              <span className="relative flex size-[20px] shrink-0 items-center justify-center">
+                <span
+                  className={cn(
+                    "absolute inset-0 rounded-full border-[1.75px] border-line transition-opacity duration-300",
+                    added ? "opacity-0" : "opacity-100",
+                  )}
+                />
+                <span
+                  className={cn(
+                    "text-mint transition-all duration-300",
+                    added ? "scale-100 opacity-100" : "scale-50 opacity-0",
+                  )}
+                >
+                  <Icon name="check-circle" />
+                </span>
+              </span>
+              <span
+                className={cn(
+                  "flex-1 text-[13px] leading-[1.35] transition-colors duration-300",
+                  added ? "font-semibold text-ink" : "text-ink-muted",
+                )}
+              >
+                {row}
+              </span>
+              <span
+                className={cn(
+                  "text-[11px] font-semibold leading-[1.2] text-sage transition-opacity duration-300",
+                  added ? "opacity-100" : "opacity-0",
+                )}
+              >
+                Added
+              </span>
+            </li>
+          );
+        })}
       </ul>
 
       <p className="text-[11px] leading-[1.4] text-ink-muted">
@@ -166,6 +229,9 @@ function ScopeAsset() {
     { label: "Payments", value: "Direct to your bank account" },
   ];
 
+  // The scope fills in line by line, the way it is actually put together.
+  const filled = Math.min(useDemoStep(terms.length + 3, 700), terms.length);
+
   return (
     <>
       <div className="flex w-full items-center justify-between gap-4">
@@ -177,8 +243,15 @@ function ScopeAsset() {
             Prepared for [ Practice name ]
           </p>
         </div>
-        <span className="shrink-0 rounded-full bg-warning-bg px-[11px] py-[6px] text-[11px] font-semibold leading-[1.2] text-warning">
-          Awaiting your approval
+        <span
+          className={cn(
+            "shrink-0 rounded-full px-[11px] py-[6px] text-[11px] font-semibold leading-[1.2] transition-colors duration-500",
+            filled < terms.length
+              ? "bg-surface-2 text-ink-muted"
+              : "bg-warning-bg text-warning",
+          )}
+        >
+          {filled < terms.length ? "Being prepared" : "Awaiting your approval"}
         </span>
       </div>
 
@@ -187,12 +260,18 @@ function ScopeAsset() {
           <div
             key={term.label}
             className={cn(
-              "flex items-center justify-between gap-4",
+              "flex items-center justify-between gap-4 transition-opacity duration-500",
               index > 0 && "border-t border-line pt-[10px]",
+              index < filled ? "opacity-100" : "opacity-30",
             )}
           >
             <dt className="text-[13px] font-medium leading-[1.4] text-ink-muted">{term.label}</dt>
-            <dd className="text-right text-[14px] font-semibold leading-[1.4] text-ink">
+            <dd
+              className={cn(
+                "text-right text-[14px] font-semibold leading-[1.4] text-ink transition-transform duration-500",
+                index < filled ? "translate-x-0" : "translate-x-[6px]",
+              )}
+            >
               {term.value}
             </dd>
           </div>
@@ -228,7 +307,8 @@ function ReportingAsset() {
         <p className="text-[17px] font-semibold leading-[1.25] tracking-[-0.01em] text-ink">
           Your practice, this month
         </p>
-        <span className="rounded-full bg-good-bg px-[11px] py-[6px] text-[11px] font-semibold leading-[1.2] text-sage-dark">
+        <span className="flex items-center gap-[6px] rounded-full bg-good-bg px-[11px] py-[6px] text-[11px] font-semibold leading-[1.2] text-sage-dark">
+          <span className="demo-dot size-[6px] rounded-full bg-sage" />
           Live
         </span>
       </div>
@@ -253,11 +333,11 @@ function ReportingAsset() {
           Collected, last 6 months
         </p>
         <div className="flex items-end gap-[8px] border-b border-line">
-          {bars.map((bar) => (
+          {bars.map((bar, index) => (
             <div
               key={bar.month}
-              className="flex-1 rounded-t-[4px] bg-sage"
-              style={{ height: `${bar.height}px` }}
+              className="demo-bar flex-1 rounded-t-[4px] bg-sage"
+              style={{ height: `${bar.height}px`, animationDelay: `${index * 0.14}s` }}
             />
           ))}
         </div>
@@ -410,10 +490,40 @@ export function GettingStarted() {
                 </div>
               ))}
             </dl>
+
+            {/*
+              The one real control in the panel. The steps describe a process
+              nobody can start from here, so the column ends with the way in —
+              straight to the enquiry form on /contact.
+            */}
+            <Button
+              data-anim="panel-item"
+              href="/contact#book"
+              size="md"
+              iconChip="arrow-right"
+              className="mt-[4px]"
+            >
+              Book a Consultation
+            </Button>
           </div>
 
-          <div data-anim="panel-item" className="flex flex-1 flex-col items-start gap-[16px] rounded-[20px] bg-off-white p-[24px]">
-            <Asset />
+          {/*
+            Inert on purpose. The panel is a picture of the step — people tried
+            to book a call by clicking the calendar — so it takes no pointer
+            events, holds no selectable text, and is hidden from screen readers
+            behind the caption underneath, which says what it is.
+          */}
+          <div data-anim="panel-item" className="flex flex-1 flex-col items-start gap-[14px] rounded-[20px] bg-off-white p-[24px]">
+            <div
+              aria-hidden
+              className="pointer-events-none flex w-full cursor-default select-none flex-col items-start gap-[16px]"
+            >
+              <Asset />
+            </div>
+            <p className="flex items-center gap-[8px] text-[11px] font-medium leading-[1.4] text-ink-muted">
+              <span className="demo-dot size-[6px] shrink-0 rounded-full bg-sage" />
+              Preview — this panel plays on its own. Nothing in it is a live control.
+            </p>
           </div>
         </div>
 

@@ -1,15 +1,27 @@
 import Image from "next/image";
 import { Decor } from "@/components/ui/Decor";
 import { ArrowLink } from "@/components/ui/ArrowLink";
+import { Icon, type IconName } from "@/components/ui/Icon";
 import { ServiceGridStage } from "@/components/motion/stages/ServiceGridStage";
 import { MaskHeading } from "@/components/motion/MaskHeading";
 
 /**
  * Figma: "HF · 02 Home — What we handle · ITERATION 3" (88:1797).
  *
- * Service 01 is a full-width dark feature card carrying a built invoice view;
- * 02/03 are photo-topped cards; 04/05 are white cards with built data panels.
+ * The running order is the one used everywhere else on the site — see the
+ * `services` list in `src/lib/site.ts`, which drives the nav menu, the footer
+ * and the Services page tabs. Change it there and change it here; the cards
+ * are hand-built per service, so this section can't derive it.
+ *
+ * Card treatments: 01/02 are photo-topped, 03 is the full-width dark card
+ * carrying the invoice view, 04/05 are white cards with built data panels, and
+ * 06–08 are icon cards across one row.
  * All figures are illustrative sample data, as labelled in the design.
+ *
+ * 06–08 are later additions with no frame in the file. They run as a 3-up row
+ * of icon cards rather than inventing a sixth and seventh asset panel — the
+ * row reads as a second tier, which is what they are, and it keeps the
+ * section from growing another two screens of built illustrations.
  */
 
 const STATUS_TONE = {
@@ -138,56 +150,7 @@ function CodingRecord() {
   );
 }
 
-/** Figma 88:1957 — "Asset — enquiries bar chart (built)". Heights are px in a 180px stage. */
-function EnquiriesChart() {
-  const bars = [
-    { month: "Mar", height: 60 },
-    { month: "Apr", height: 72 },
-    { month: "May", height: 69 },
-    { month: "Jun", height: 91 },
-    { month: "Jul", height: 107 },
-    { month: "Aug", height: 130, value: "74" },
-  ];
-  const tallest = 130;
-
-  return (
-    <>
-      <div className="flex w-full items-center justify-between text-[11px] leading-[1.2] text-ink-muted">
-        <p className="font-semibold uppercase tracking-[0.08em]">New patient enquiries</p>
-        <p>Last 6 months</p>
-      </div>
-
-      <div className="flex w-full items-end gap-[52px] border-b border-line pb-0 [--chart-h:158px]">
-        {bars.map((bar) => (
-          <div key={bar.month} className="flex flex-1 flex-col items-center gap-[6px]">
-            {bar.value ? (
-              <p className="text-[14px] font-bold leading-[1.1] text-ink">{bar.value}</p>
-            ) : null}
-            <div
-              data-anim="bar"
-              className="w-full max-w-[44px] rounded-t-[4px] bg-sage"
-              style={{ height: `${(bar.height / tallest) * 130}px` }}
-            />
-          </div>
-        ))}
-      </div>
-      <div className="flex w-full gap-[52px]">
-        {bars.map((bar) => (
-          <p
-            key={bar.month}
-            className="flex-1 text-center text-[11px] font-medium leading-[1.2] text-ink-muted"
-          >
-            {bar.month}
-          </p>
-        ))}
-      </div>
-
-      <p className="text-[11px] leading-[1.4] text-ink-muted">Illustrative — sample data</p>
-    </>
-  );
-}
-
-/** Cards 02 & 03 — a photo slot above the copy. */
+/** Cards with a photograph above the copy. */
 function PhotoServiceCard({
   number,
   title,
@@ -229,7 +192,60 @@ function PhotoServiceCard({
   );
 }
 
-/** Cards 04 & 05 — copy above a built asset panel. */
+/**
+ * The embassy card's asset panel.
+ *
+ * A wire globe and the three things that have to be in place before an
+ * international patient is seen. Line work only, in the same neutral greys as
+ * the other asset panels — the colour in this section belongs to the status
+ * chips and the dark cards, not to an illustration.
+ */
+function EmbassyRecord() {
+  return (
+    <>
+      <div className="flex w-full items-center gap-[20px] rounded-[16px] bg-white p-[18px] shadow-sm">
+        <svg
+          viewBox="0 0 88 88"
+          fill="none"
+          aria-hidden
+          className="hidden size-[88px] shrink-0 text-line sm:block"
+        >
+          <g stroke="currentColor" strokeWidth="1.25">
+            <circle cx="44" cy="44" r="35" />
+            <ellipse cx="44" cy="44" rx="14" ry="35" />
+            <ellipse cx="44" cy="44" rx="26" ry="35" />
+            <path d="M12.6 33h62.8M9 44h70M12.6 55h62.8" />
+          </g>
+        </svg>
+
+        <div className="flex flex-1 flex-col gap-[10px]">
+          {[
+            { label: "REGISTRATION", value: "Embassy registered" },
+            { label: "GUARANTEE", value: "Letter approved" },
+            { label: "BILLING", value: "Direct to embassy" },
+          ].map((row, i) => (
+            <div
+              key={row.label}
+              className={`flex items-center justify-between gap-[10px] ${
+                i === 0 ? "" : "border-t border-line pt-[10px]"
+              }`}
+            >
+              <p className="text-[11px] font-semibold leading-[1.2] tracking-[0.08em] text-ink-muted">
+                {row.label}
+              </p>
+              <p className="text-[14px] font-semibold leading-[1.2] text-ink">{row.value}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      <p className="text-[11px] leading-[1.4] text-ink-muted">
+        Settled with the embassy before the first appointment.
+      </p>
+    </>
+  );
+}
+
+/** Cards with copy above a built asset panel. */
 function AssetServiceCard({
   number,
   title,
@@ -262,6 +278,47 @@ function AssetServiceCard({
   );
 }
 
+/** Cards 06–08 — icon, copy, link. No frame in the design; see the note above. */
+function IconServiceCard({
+  number,
+  icon,
+  title,
+  body,
+  linkLabel,
+  href,
+}: {
+  number: string;
+  icon: IconName;
+  title: string;
+  body: string;
+  linkLabel: string;
+  href: string;
+}) {
+  return (
+    <div
+      data-anim="card"
+      data-reveal=""
+      className="flex flex-col justify-between gap-[24px] rounded-[28px] bg-white p-[32px] shadow-md"
+    >
+      <div className="flex flex-col gap-[16px]">
+        <div className="flex items-center justify-between">
+          <span className="flex size-[52px] items-center justify-center rounded-[16px] bg-off-white text-sage">
+            <Icon name={icon} size={24} />
+          </span>
+          <p className="text-[13px] font-semibold leading-[1.2] tracking-[0.1em] text-sage">
+            {number}
+          </p>
+        </div>
+        <h3 className="text-[22px] font-semibold leading-[1.25] tracking-[-0.01em] text-ink">
+          {title}
+        </h3>
+        <p className="text-[16px] leading-[1.65] text-ink-muted">{body}</p>
+      </div>
+      <ArrowLink href={href}>{linkLabel}</ArrowLink>
+    </div>
+  );
+}
+
 export function WhatWeHandle() {
   return (
     <section className="bg-off-white px-6 py-[96px] md:px-10 lg:px-20 lg:py-[128px]">
@@ -284,7 +341,31 @@ export function WhatWeHandle() {
         </div>
 
         <div className="flex flex-col gap-[24px]">
-          {/* -- Service 01 — feature card --------------------------- */}
+          {/* -- Services 01 & 02 — photo cards ---------------------- */}
+          <div className="grid gap-[24px] lg:grid-cols-2">
+            <PhotoServiceCard
+              number="01"
+              title="Practice Management Operations"
+              body="Patient communication, diary management, records, IT & software support handled end-to-end."
+              linkLabel="Explore Practice Operations"
+              href="/services#practice-management"
+              image="/images/practice-manager-front-desk.webp"
+              alt="A practice manager working at the front desk"
+              gradient="linear-gradient(161deg, rgb(94, 144, 137) 15.603%, rgb(30, 56, 53) 86.525%)"
+            />
+            <PhotoServiceCard
+              number="02"
+              title="Medical Referral"
+              body="Connecting your patients with the right specialist or consultant through our professional network."
+              linkLabel="Explore Medical Referral"
+              href="/services#medical-referrals"
+              image="/images/hero-consultant-with-patient.webp"
+              alt="A consultant going through a referral with a patient"
+              gradient="linear-gradient(161deg, rgb(86, 138, 131) 15.603%, rgb(26, 50, 47) 86.525%)"
+            />
+          </div>
+
+          {/* -- Service 03 — feature card --------------------------- */}
           <div
 data-anim="feature"
             data-reveal=""
@@ -300,15 +381,14 @@ data-anim="feature"
               <div className="flex max-w-[500px] flex-col justify-between gap-8 lg:min-h-[344px]">
                 <div className="flex flex-col gap-[16px]">
                   <p className="text-[13px] font-semibold leading-[1.2] tracking-[0.1em] text-mint-light">
-                    01
+                    03
                   </p>
                   <h3 className="text-[clamp(1.75rem,3vw,38px)] font-semibold leading-[1.12] tracking-[-0.02em] text-white">
-                    Billing &amp; Collection
+                    Medical Billing &amp; Collections
                   </h3>
                   <p className="text-[17px] leading-[1.7] text-on-sage">
-                    Accurate billing, proactive follow-up and live financial reporting. Every patient
-                    and insurer payment goes straight to your bank account — we never sit between a
-                    consultant and their income.
+                    Full revenue cycle management with a 98% aged debt recovery rate and live
+                    financial reporting.
                   </p>
                   <ul className="flex flex-wrap gap-[8px] pt-[6px]">
                     {["Invoice raising", "Payment follow-up", "Insurer liaison", "Live reporting"].map(
@@ -341,50 +421,54 @@ data-anim="feature"
             </div>
           </div>
 
-          {/* -- Services 02 & 03 ------------------------------------ */}
-          <div className="grid gap-[24px] lg:grid-cols-2">
-            <PhotoServiceCard
-              number="02"
-              title="Practice Management Operations"
-              body="Administrative, secretarial and patient coordination support that keeps the day running."
-              linkLabel="Explore Practice Operations"
-              href="/services#practice-management"
-              image="/images/practice-manager-front-desk.webp"
-              alt="A practice manager working at the front desk"
-              gradient="linear-gradient(161deg, rgb(94, 144, 137) 15.603%, rgb(30, 56, 53) 86.525%)"
-            />
-            <PhotoServiceCard
-              number="03"
-              title="Embassy Registration & International Patients"
-              body="Embassy registration, letters of guarantee and international patient arrangements, end to end."
-              linkLabel="Explore International Services"
-              href="/services#international-patients"
-              image="/images/international-patient-clinic.webp"
-              alt="A consultant meeting an international patient and their family"
-              gradient="linear-gradient(161deg, rgb(78, 127, 122) 15.603%, rgb(21, 43, 40) 86.525%)"
-            />
-          </div>
-
           {/* -- Services 04 & 05 ------------------------------------ */}
           <div className="grid gap-[24px] lg:grid-cols-2">
             <AssetServiceCard
               number="04"
+              title="Embassy Registration & Onboarding"
+              body="Registration and administration for embassy and sponsor-funded patients across 10+ countries."
+              linkLabel="Explore Embassy Services"
+              href="/services#international-patients"
+            >
+              <EmbassyRecord />
+            </AssetServiceCard>
+            <AssetServiceCard
+              number="05"
               title="Medical Coding & Reporting"
-              body="Specialist coding and submission support for accurate billing and compliant records."
+              body="CCSD and OPCS-4 coding support for accurate claims and fewer delays."
               linkLabel="Explore Medical Coding"
               href="/services#medical-coding"
             >
               <CodingRecord />
             </AssetServiceCard>
-            <AssetServiceCard
-              number="05"
+          </div>
+
+          {/* -- Services 06, 07 & 08 — icon cards, one row ---------- */}
+          <div className="grid gap-[24px] md:grid-cols-2 lg:grid-cols-3">
+            <IconServiceCard
+              number="06"
+              icon="microphone"
+              title="Medical Transcription"
+              body="Accurate, professionally formatted clinical letters and documents, prepared promptly and confidentially."
+              linkLabel="Explore Transcription"
+              href="/services#medical-transcription"
+            />
+            <IconServiceCard
+              number="07"
+              icon="trend-up"
               title="Marketing & Digital Growth"
-              body="We help the right patients find and understand your services, at a pace that suits you."
+              body="Websites, social presence and campaigns that help the right patients find you."
               linkLabel="Explore Marketing & Growth"
               href="/services#marketing-growth"
-            >
-              <EnquiriesChart />
-            </AssetServiceCard>
+            />
+            <IconServiceCard
+              number="08"
+              icon="calculator"
+              title="Tax & Accounting"
+              body="Our accountants prepare and file everything HMRC needs, so your tax affairs stay accurate, on time and off your mind."
+              linkLabel="Explore Tax & Accounting"
+              href="/services#tax-accounting"
+            />
           </div>
         </div>
       </div>

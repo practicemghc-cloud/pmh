@@ -437,6 +437,29 @@ async function run() {
   console.log(`\nWriting ${docs.length} documents`);
   let tx = client.transaction();
   for (const doc of docs) tx = tx.createOrReplace(withKeys(doc) as never);
+
+  /*
+   * Clear the leftovers of the seeded lists.
+   *
+   * `createOrReplace` only adds and overwrites, so shortening a list in code
+   * — nine client stories down to four, say — left the extra documents in the
+   * dataset, and the site prefers CMS content over the code defaults, so they
+   * kept rendering. Anything of a list type that this run did not write is
+   * stale by definition. Scoped to the three list types the seed owns
+   * (published only, so Studio drafts are left alone); singleton page
+   * documents are never touched.
+   */
+  const seeded = new Set(docs.map((doc) => doc._id as string));
+  const listTypes = ["service", "clientStory", "faq"];
+  const published = await client.fetch<string[]>(`*[_type in $types && !(_id in path("drafts.**"))]._id`, {
+    types: listTypes,
+  });
+  const stale = published.filter((id) => !seeded.has(id));
+  if (stale.length > 0) {
+    console.log(`Clearing ${stale.length} document(s) no longer present in the content files`);
+    for (const id of stale) tx = tx.delete(id);
+  }
+
   await tx.commit();
 
   console.log("\nDone. Open /studio to edit.\n");

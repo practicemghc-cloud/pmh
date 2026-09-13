@@ -202,3 +202,116 @@
     opacity: 0.28;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Floating WhatsApp button.
+
+   Two layers of motion, both deliberately slow so it reads as an invitation
+   rather than an alert: the button itself breathes, and a ring expands out
+   from underneath it on a longer cycle. The ring is a sibling rather than a
+   ::before so it can sit behind the button without a stacking context of its
+   own, and it is `pointer-events: none` so it never eats the click.
+--------------------------------------------------------------------------- */
+
+@keyframes wa-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+@keyframes wa-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  70% {
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+.wa-breathe {
+  animation: wa-breathe 3.6s ease-in-out infinite;
+}
+
+.wa-ring {
+  animation: wa-ring 3.6s cubic-bezier(0.16, 0.84, 0.44, 1) infinite;
+}
+
+/* The second ring trails the first by half a cycle, so the pulse never stops
+   halfway — there is always one ring on its way out. */
+.wa-ring-delayed {
+  animation-delay: 1.8s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wa-breathe,
+  .wa-ring {
+    animation: none;
+  }
+
+  /* Keep a static halo so the button still reads as raised, not broken. */
+  .wa-ring {
+    opacity: 0.22;
+  }
+
+  .wa-ring-delayed {
+    display: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Getting started — the asset panels play themselves.
+
+   The panels are pictures of the process, but they were pictures of real UI:
+   people tried to click the calendar to book a call. They now animate, which
+   reads as a recording rather than a control waiting for input. The React side
+   drives the step-by-step demos; these two are the purely decorative loops.
+--------------------------------------------------------------------------- */
+
+@keyframes demo-bar-rise {
+  from {
+    transform: scaleY(0.42);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+.demo-bar {
+  transform-origin: bottom;
+  animation: demo-bar-rise 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+}
+
+@keyframes demo-dot {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.demo-dot {
+  animation: demo-dot 1.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Hold the finished state — the React demos do the same. */
+  .demo-bar {
+    animation: none;
+  }
+
+  .demo-dot {
+    animation: none;
+    opacity: 0.6;
+  }
+}

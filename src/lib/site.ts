@@ -16,6 +16,8 @@ export const site = {
     "Complete practice management for independent consultants and private healthcare providers across the UK.",
   email: "[ hello@pmg-healthcare.co.uk ]",
   phone: "[ +44 (0)20 0000 0000 ]",
+  /** Floating WhatsApp button. Display form; `waHref` strips it for the link. */
+  whatsapp: "+44 204 5842 522",
   companyNumber: "[ 00000000 ]",
   copyright:
     "© 2026 Practice Management Group Ltd  ·  Registered in England & Wales, company no. [ 00000000 ]",
@@ -31,6 +33,15 @@ export const site = {
  */
 export const telHref = (display: string) =>
   `tel:${display.replace(/\(0\)/g, "").replace(/[^+\d]/g, "")}`;
+
+/**
+ * wa.me wants the number bare — international digits only, no `+`, spaces or
+ * punctuation — and an optional pre-filled first message.
+ */
+export const waHref = (display: string, message?: string) => {
+  const digits = display.replace(/\(0\)/g, "").replace(/\D/g, "");
+  return `https://wa.me/${digits}${message ? `?text=${encodeURIComponent(message)}` : ""}`;
+};
 
 export const mailHref = (display: string) => `mailto:${display.replace(/[[\]\s]/g, "")}`;
 
@@ -74,6 +85,15 @@ export const services: Service[] = [
     icon: "calendar-check",
   },
   {
+    slug: "medical-referrals",
+    tabLabel: "Medical referrals",
+    name: "Medical referral management",
+    footerLabel: "Medical Referral Management",
+    blurb:
+      "Referrals received, acknowledged and followed through to a booked appointment.",
+    icon: "user-plus",
+  },
+  {
     slug: "billing-collection",
     tabLabel: "Billing & collection",
     name: "Billing & collection",
@@ -81,15 +101,6 @@ export const services: Service[] = [
     blurb:
       "Accurate billing, proactive payment follow-up and live financial reporting.",
     icon: "receipt-check",
-  },
-  {
-    slug: "medical-coding",
-    tabLabel: "Medical coding",
-    name: "Medical coding & reporting",
-    footerLabel: "Medical Coding & Reporting",
-    blurb:
-      "Specialist coding and submission support for accurate, compliant records.",
-    icon: "file-check",
   },
   {
     slug: "international-patients",
@@ -101,12 +112,37 @@ export const services: Service[] = [
     icon: "globe",
   },
   {
+    slug: "medical-coding",
+    tabLabel: "Medical coding",
+    name: "Medical coding & reporting",
+    footerLabel: "Medical Coding & Reporting",
+    blurb:
+      "Specialist coding and submission support for accurate, compliant records.",
+    icon: "file-check",
+  },
+  {
+    slug: "medical-transcription",
+    tabLabel: "Medical transcription",
+    name: "Medical transcription",
+    footerLabel: "Medical Transcription",
+    blurb: "Clinic letters, operation notes and reports typed up and returned for sign-off.",
+    icon: "microphone",
+  },
+  {
     slug: "marketing-growth",
     tabLabel: "Marketing & growth",
     name: "Marketing & digital growth",
     footerLabel: "Marketing & Digital Growth",
     blurb: "Helping the right patients find and understand your services.",
     icon: "trend-up",
+  },
+  {
+    slug: "tax-accounting",
+    tabLabel: "Tax & accounting",
+    name: "Tax & accounting",
+    footerLabel: "Tax & Accounting",
+    blurb: "Bookkeeping, annual accounts and tax, reconciled against your billing.",
+    icon: "calculator",
   },
 ];
 

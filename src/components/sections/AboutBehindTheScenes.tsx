@@ -20,7 +20,7 @@ const WORDS = [
 export function AboutBehindTheScenes() {
   return (
     <section
-      className="relative overflow-x-clip"
+      className="relative overflow-clip"
       style={{
         backgroundImage:
           "linear-gradient(154.6deg, rgb(51, 96, 91) 12.857%, rgb(22, 48, 44) 57.143%, rgb(12, 25, 23) 84.286%)",

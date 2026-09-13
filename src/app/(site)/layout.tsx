@@ -1,5 +1,6 @@
 import { SiteNav } from "@/components/layout/SiteNav";
 import { SiteFooter } from "@/components/layout/SiteFooter";
+import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
 import { getSiteContent } from "../../../sanity/content";
 
 /**
@@ -29,6 +30,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         services={content.services}
         socialLinks={content.socialLinks}
       />
+      <WhatsAppButton />
     </>
   );
 }

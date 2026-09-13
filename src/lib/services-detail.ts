@@ -57,7 +57,7 @@ export type ServicePanel = {
 export const servicePanels: ServicePanel[] = [
   {
     slug: "practice-management",
-    eyebrow: "01 / 05  ·  Practice management & operations",
+    eyebrow: "01 / 08  ·  Practice management & operations",
     title: "The day-to-day of running the practice, handled.",
     intro:
       "Day-to-day administrative, secretarial and patient coordination support that keeps your practice running smoothly.",
@@ -97,8 +97,48 @@ export const servicePanels: ServicePanel[] = [
     ],
   },
   {
+    slug: "medical-referrals",
+    eyebrow: "02 / 08  ·  Medical referral management",
+    title: "No referral slips through.",
+    intro:
+      "Every referral logged, acknowledged and followed through to a booked appointment — whoever it came from.",
+    included: [
+      "One intake for GP, insurer and hospital referrals",
+      "Same-day acknowledgement to the referrer",
+      "Triage against your clinic criteria",
+      "Appointment booking and confirmation",
+      "Outcome letters back to the referrer",
+      "Referral source reporting",
+    ],
+    asset: {
+      kind: "statuses",
+      heading: "Referrals this week",
+      rows: [
+        { ref: "REF-2041", label: "Consultant referral", status: "Booked", tone: "good" },
+        { ref: "REF-2042", label: "Insurer referral", status: "Booked", tone: "good" },
+        { ref: "REF-2043", label: "GP referral", status: "Awaiting notes", tone: "warning" },
+        { ref: "REF-2044", label: "Self-referral", status: "Acknowledged", tone: "neutral" },
+      ],
+      note: "Illustrative — sample data",
+    },
+    steps: [
+      {
+        title: "Every referral lands in one place",
+        body: "GPs, insurers, hospitals and self-referrals, logged the day they arrive.",
+      },
+      {
+        title: "We triage and book",
+        body: "Checked against your criteria, then into the right clinic slot.",
+      },
+      {
+        title: "Your referrers hear back",
+        body: "Acknowledged on the day, with the outcome letter after clinic.",
+      },
+    ],
+  },
+  {
     slug: "billing-collection",
-    eyebrow: "02 / 05  ·  Billing & collection",
+    eyebrow: "03 / 08  ·  Billing & collection",
     title: "Your money stays yours.",
     intro:
       "Accurate billing, proactive payment follow-up and live financial reporting keep you informed and in control.",
@@ -137,48 +177,8 @@ export const servicePanels: ServicePanel[] = [
     ],
   },
   {
-    slug: "medical-coding",
-    eyebrow: "03 / 05  ·  Medical coding & reporting",
-    title: "Coded right the first time.",
-    intro:
-      "Specialist coding and submission support for accurate billing, compliant records and reliable reporting.",
-    included: [
-      "Procedure and diagnosis coding",
-      "Coding review before submission",
-      "Insurer-specific submission rules",
-      "Query and rejection handling",
-      "Compliant record keeping",
-      "Monthly coding reports",
-    ],
-    asset: {
-      kind: "coded",
-      heading: "Coded this month",
-      rows: [
-        { label: "Arthroscopy, knee", code: "W82.1", done: true },
-        { label: "Consultation, follow-up", code: "WA02", done: true },
-        { label: "MRI, lumbar spine", code: "U21.2", done: true },
-        { label: "Injection, joint", code: "W90.4", done: false },
-      ],
-      note: "Illustrative — sample data; codes are example OPCS-4 formats",
-    },
-    steps: [
-      {
-        title: "We code from your notes",
-        body: "Every episode coded by a specialist, not matched to a template.",
-      },
-      {
-        title: "We check before it goes",
-        body: "A review pass against the payer’s rules, so claims go out clean.",
-      },
-      {
-        title: "We handle the queries",
-        body: "Rejections and requests for information come to us, not to you.",
-      },
-    ],
-  },
-  {
     slug: "international-patients",
-    eyebrow: "04 / 05  ·  Embassy & international patients",
+    eyebrow: "04 / 08  ·  Embassy & international patients",
     title: "International patients, without the paperwork.",
     intro:
       "End-to-end support for embassy registration, billing, obtaining letters of guarantee and international patient arrangements.",
@@ -217,8 +217,88 @@ export const servicePanels: ServicePanel[] = [
     ],
   },
   {
+    slug: "medical-coding",
+    eyebrow: "05 / 08  ·  Medical coding & reporting",
+    title: "Coded right the first time.",
+    intro:
+      "Specialist coding and submission support for accurate billing, compliant records and reliable reporting.",
+    included: [
+      "Procedure and diagnosis coding",
+      "Coding review before submission",
+      "Insurer-specific submission rules",
+      "Query and rejection handling",
+      "Compliant record keeping",
+      "Monthly coding reports",
+    ],
+    asset: {
+      kind: "coded",
+      heading: "Coded this month",
+      rows: [
+        { label: "Arthroscopy, knee", code: "W82.1", done: true },
+        { label: "Consultation, follow-up", code: "WA02", done: true },
+        { label: "MRI, lumbar spine", code: "U21.2", done: true },
+        { label: "Injection, joint", code: "W90.4", done: false },
+      ],
+      note: "Illustrative — sample data; codes are example OPCS-4 formats",
+    },
+    steps: [
+      {
+        title: "We code from your notes",
+        body: "Every episode coded by a specialist, not matched to a template.",
+      },
+      {
+        title: "We check before it goes",
+        body: "A review pass against the payer’s rules, so claims go out clean.",
+      },
+      {
+        title: "We handle the queries",
+        body: "Rejections and requests for information come to us, not to you.",
+      },
+    ],
+  },
+  {
+    slug: "medical-transcription",
+    eyebrow: "06 / 08  ·  Medical transcription",
+    title: "Dictate it once.",
+    intro:
+      "Clinic letters, operation notes and reports transcribed accurately in your own templates, back with you for sign-off.",
+    included: [
+      "Clinic letters and follow-up correspondence",
+      "Operation notes and discharge summaries",
+      "Medico-legal and insurance reports",
+      "Terminology specific to your speciality",
+      "Formatted to your own letter templates",
+      "Secure upload and return",
+    ],
+    asset: {
+      kind: "checklist",
+      heading: "Today's dictations",
+      rows: [
+        { lead: "09:12", label: "Clinic letter returned", done: true },
+        { lead: "10:40", label: "Operation note returned", done: true },
+        { lead: "12:05", label: "Discharge summary returned", done: true },
+        { lead: "14:20", label: "Insurance report in review", done: false },
+      ],
+      note: "Illustrative — sample data",
+    },
+    steps: [
+      {
+        title: "You dictate after clinic",
+        body: "Record on any device and upload it securely — no forms to fill in.",
+      },
+      {
+        title: "We type it to your template",
+        body: "Transcribed by people who know the terminology of your speciality.",
+      },
+      {
+        title: "It comes back for sign-off",
+        body: "Usually the same working day, ready to send.",
+      },
+    ],
+  },
+  {
     slug: "marketing-growth",
-    eyebrow: "05 / 05  ·  Marketing & digital growth",
+    eyebrow: "07 / 08  ·  Marketing & digital growth",
     title: "Grow at a pace that feels right.",
     intro:
       "We help the right patients find and understand your services through our tailored programmes.",
@@ -255,6 +335,46 @@ export const servicePanels: ServicePanel[] = [
       {
         title: "You see what it produced",
         body: "Enquiries tracked to source and reported every month.",
+      },
+    ],
+  },
+  {
+    slug: "tax-accounting",
+    eyebrow: "08 / 08  ·  Tax & accounting",
+    title: "The numbers, kept straight.",
+    intro:
+      "Bookkeeping, annual accounts and tax handled alongside your billing, so the same figures never get reconciled twice.",
+    included: [
+      "Practice bookkeeping and reconciliation",
+      "Annual accounts preparation",
+      "Self-assessment and corporation tax",
+      "VAT and payroll where they apply",
+      "Expense and allowance tracking",
+      "Year-end planning conversations",
+    ],
+    asset: {
+      kind: "hbars",
+      heading: "Where the year went",
+      rows: [
+        { label: "Collected", value: "£412,600", width: 100 },
+        { label: "Retained", value: "£237,900", width: 57.7 },
+        { label: "Practice costs", value: "£96,400", width: 23.4 },
+        { label: "Tax set aside", value: "£78,300", width: 19 },
+      ],
+      note: "Illustrative — sample data",
+    },
+    steps: [
+      {
+        title: "We start from your billing",
+        body: "The collection data is already ours, so the books reconcile against it.",
+      },
+      {
+        title: "We keep the year current",
+        body: "Bookkeeping month by month, rather than a scramble in January.",
+      },
+      {
+        title: "You know the bill early",
+        body: "Tax set aside as you earn, with the figure confirmed well before it is due.",
       },
     ],
   },

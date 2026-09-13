@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed": "tsx scripts/seed-sanity.ts"
+    "seed": "tsx --env-file-if-exists=.env.local scripts/seed-sanity.ts"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

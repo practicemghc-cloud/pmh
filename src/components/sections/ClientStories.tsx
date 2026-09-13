@@ -97,13 +97,18 @@ export function ClientStories({ stories }: { stories: readonly ClientStory[] }) 
 
   return (
     <section
-      className="relative overflow-x-clip"
+      className="relative overflow-clip"
       style={{
         backgroundImage:
           "linear-gradient(149.67deg, rgb(57, 101, 94) 12.857%, rgb(29, 53, 50) 55.714%, rgb(15, 30, 28) 84.286%)",
       }}
     >
      <AvatarRailStage>
+      {/*
+        The glow is anchored above the section's own top edge, so the section
+        clips on both axes — with `overflow-x-clip` it spilled up over the
+        off-white section above as a stray pale wash.
+      */}
       {/* -- Decorative glow + column rules -------------------------- */}
       <Decor src="/decor/client-stories-glow.svg" className="left-[19%] top-[-31%] h-[57%] w-[62%]" />
       <div aria-hidden className="pointer-events-none absolute inset-0 mx-auto max-w-frame">
