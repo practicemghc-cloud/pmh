@@ -17,15 +17,15 @@ const MESSAGE = `Hello ${site.name}, I'd like to ask about your practice managem
 
 export function WhatsAppButton() {
   return (
-    <div className="group/wa fixed bottom-6 right-6 z-[60] print:hidden md:bottom-8 md:right-8">
+    <div className="wa-dock fixed bottom-6 right-6 z-[60] print:hidden md:bottom-8 md:right-8">
       {/* Expanding rings — behind the button, never clickable. */}
       <span
         aria-hidden
-        className="wa-ring pointer-events-none absolute bottom-0 right-0 size-[60px] rounded-full bg-[#25d366] transition-opacity duration-200 group-hover/wa:opacity-0 group-focus-within/wa:opacity-0"
+        className="wa-ring pointer-events-none absolute bottom-0 right-0 size-[60px] rounded-full bg-[#25d366]"
       />
       <span
         aria-hidden
-        className="wa-ring wa-ring-delayed pointer-events-none absolute bottom-0 right-0 size-[60px] rounded-full bg-[#25d366] transition-opacity duration-200 group-hover/wa:opacity-0 group-focus-within/wa:opacity-0"
+        className="wa-ring wa-ring-delayed pointer-events-none absolute bottom-0 right-0 size-[60px] rounded-full bg-[#25d366]"
       />
 
       <a

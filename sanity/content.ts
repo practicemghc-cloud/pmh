@@ -8,7 +8,14 @@ import {
   clientStoriesQuery,
 } from "./queries";
 
-import { site, navLinks, footerColumns, services as defaultServices, ctaReassurance } from "@/lib/site";
+import {
+  site,
+  navLinks,
+  footerColumns,
+  services as defaultServices,
+  socialLinks as defaultSocialLinks,
+  ctaReassurance,
+} from "@/lib/site";
 import { homeFaqs, contactFaqCategories, type Faq } from "@/lib/faqs";
 import { clientStories as defaultStories, type ClientStory } from "@/lib/stories";
 import { servicePanels as defaultPanels } from "@/lib/services-detail";
@@ -56,7 +63,6 @@ export async function getSiteContent() {
       socialLinks?: { platform: SocialPlatform; url: string }[];
       navLinks?: { label: string; href: string }[];
       navPrimaryCta?: { label: string; href: string };
-      navSecondaryCta?: { label: string; href: string };
       footerCompanyLinks?: { label: string; href: string | null }[];
       footerLegalLinks?: { label: string; href: string | null }[];
     }>(siteSettingsQuery, {}, ["siteSettings"]),
@@ -106,7 +112,7 @@ export async function getSiteContent() {
       shareImage: settings?.shareImage?.url ?? null,
       shareImageAlt: settings?.shareImage?.alt ?? null,
     },
-    socialLinks: (settings?.socialLinks ?? []).filter(
+    socialLinks: pickList(settings?.socialLinks, defaultSocialLinks).filter(
       (l): l is SocialLink => Boolean(l?.platform && l?.url),
     ),
     navLinks: pickList(settings?.navLinks, navLinks).map((l) => ({
@@ -116,10 +122,6 @@ export async function getSiteContent() {
       hasMegaMenu: l.href === "/services",
     })),
     navPrimaryCta: pick(settings?.navPrimaryCta, { label: "Book a Call", href: "/contact#book" }),
-    navSecondaryCta: pick(settings?.navSecondaryCta, {
-      label: "Send an enquiry",
-      href: "/contact",
-    }),
     services,
     footerColumns: [
       {

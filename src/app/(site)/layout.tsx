@@ -1,6 +1,7 @@
 import { SiteNav } from "@/components/layout/SiteNav";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
+import { CookieBanner } from "@/components/layout/CookieBanner";
 import { getSiteContent } from "../../../sanity/content";
 
 /**
@@ -20,7 +21,6 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       <SiteNav
         links={content.navLinks}
         primaryCta={content.navPrimaryCta}
-        secondaryCta={content.navSecondaryCta}
         services={content.services}
       />
       <main>{children}</main>
@@ -31,6 +31,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         socialLinks={content.socialLinks}
       />
       <WhatsAppButton />
+      <CookieBanner />
     </>
   );
 }

@@ -20,7 +20,6 @@ export const siteSettingsQuery = defineQuery(`
     socialLinks[]{ platform, url },
     navLinks[]${LINK},
     navPrimaryCta${LINK},
-    navSecondaryCta${LINK},
     footerCompanyLinks[]${LINK},
     footerLegalLinks[]${LINK}
   }

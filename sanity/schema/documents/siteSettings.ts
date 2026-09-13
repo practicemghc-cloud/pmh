@@ -157,15 +157,8 @@ export const siteSettings = defineType({
       title: "Green button",
       type: "richLink",
       group: "nav",
-      description: "The mint button on the right of the menu.",
+      description: "The one button on the right of the menu.",
     }),
-    defineField({
-      name: "navSecondaryCta",
-      title: "Grey button",
-      type: "richLink",
-      group: "nav",
-    }),
-
     defineField({
       name: "footerCompanyLinks",
       title: "Footer — COMPANY column",

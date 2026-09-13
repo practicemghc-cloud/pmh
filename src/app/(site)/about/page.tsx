@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { AboutHero } from "@/components/sections/AboutHero";
 import { AboutBehindTheScenes } from "@/components/sections/AboutBehindTheScenes";
-import { AboutStatement } from "@/components/sections/AboutStatement";
 import { AboutPurpose } from "@/components/sections/AboutPurpose";
+import { AboutAdviser } from "@/components/sections/AboutAdviser";
 import { FaqSection } from "@/components/sections/FaqSection";
 import { ClosingCta } from "@/components/sections/ClosingCta";
 import { getGeneralFaqs, getClosingCta } from "../../../../sanity/content";
@@ -20,9 +20,11 @@ export default async function AboutPage() {
   return (
     <>
       <AboutHero />
-      <AboutBehindTheScenes />
-      <AboutStatement />
       <AboutPurpose />
+      <AboutAdviser />
+      {/* The dark section reads as the turn towards the close, so it runs
+          last of the story sections rather than second. */}
+      <AboutBehindTheScenes />
       <FaqSection items={faqs} />
       <ClosingCta {...cta} />
     </>

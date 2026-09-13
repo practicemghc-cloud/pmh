@@ -30,12 +30,10 @@ type Cta = { label: string; href: string };
 export function SiteNav({
   links,
   primaryCta,
-  secondaryCta,
   services,
 }: {
   links: readonly NavLink[];
   primaryCta: Cta;
-  secondaryCta: Cta;
   services: readonly Service[];
 }) {
   const pathname = usePathname();
@@ -139,9 +137,6 @@ export function SiteNav({
           <Button href={primaryCta.href} onClick={closeAll}>
             {primaryCta.label}
           </Button>
-          <Button href={secondaryCta.href} variant="secondary" onClick={closeAll}>
-            {secondaryCta.label}
-          </Button>
         </div>
 
         {/* -- Compact toggle ------------------------------------------- */}
@@ -208,9 +203,6 @@ export function SiteNav({
           <div className="flex flex-col gap-[10px]">
             <Button href={primaryCta.href} className="w-full">
               {primaryCta.label}
-            </Button>
-            <Button href={secondaryCta.href} variant="secondary" className="w-full">
-              {secondaryCta.label}
             </Button>
           </div>
         </div>

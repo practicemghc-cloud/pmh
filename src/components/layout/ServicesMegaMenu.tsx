@@ -4,9 +4,14 @@ import { Eyebrow } from "@/components/ui/Eyebrow";
 import type { Service } from "@/lib/site";
 
 /**
- * Figma: "Mega menu · Services" (133:805) — 40px padding, 28px gap,
- * a 3-column grid of five service tiles plus a sage promo cell.
+ * Figma: "Mega menu · Services" (133:805) — 40px padding, 28px gap, a
+ * 3-column grid of service tiles plus a sage promo cell in the last one.
  * Sits 12px below the floating nav and matches its 1376px width.
+ *
+ * The frame drew five tiles; the menu renders whatever the services list
+ * holds, so the eight the site now offers fill three clean rows with the promo
+ * cell closing the grid. Adding a ninth service leaves a gap beside the promo
+ * — that is the point at which the grid needs revisiting, not before.
  */
 export function ServicesMegaMenu({
   services,

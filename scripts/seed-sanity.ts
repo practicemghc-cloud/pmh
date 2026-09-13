@@ -14,7 +14,7 @@ import { createClient } from "@sanity/client";
 import { readFile } from "node:fs/promises";
 import { resolve, basename } from "node:path";
 
-import { site, navLinks, footerColumns, services, ctaReassurance } from "../src/lib/site";
+import { site, navLinks, footerColumns, services, socialLinks, ctaReassurance } from "../src/lib/site";
 import { homeFaqs, contactFaqCategories } from "../src/lib/faqs";
 import { clientStories } from "../src/lib/stories";
 import { servicePanels } from "../src/lib/services-detail";
@@ -104,7 +104,7 @@ async function run() {
   const intlPhoto = await image("international-patient-clinic.webp", "A consultant meeting an international patient and their family");
   const aboutHero = await image("about-consultation-lounge.webp", "Two colleagues in conversation in a bright consultation lounge");
   const aboutWork = await image("about-pmg-at-work.webp", "The PMG team at work in their office");
-  const aboutRoom = await image("about-purpose-reading-room.webp", "Clinicians reviewing radiographs together on a light box");
+  const aboutRoom = await image("about-purpose-radiology-review.webp", "Clinicians reviewing radiographs together on a light box");
 
   const docs: Record<string, unknown>[] = [];
 
@@ -128,18 +128,12 @@ async function run() {
       "consultant billing",
       "embassy patient services",
     ],
-    // Social profiles are seeded as examples so the footer row is visible and
-    // the shape is obvious; replace the URLs with the real accounts, or delete
-    // any row to hide that icon.
-    socialLinks: [
-      { platform: "linkedin", url: "https://www.linkedin.com/company/example" },
-      { platform: "instagram", url: "https://www.instagram.com/example" },
-      { platform: "facebook", url: "https://www.facebook.com/example" },
-    ],
+    // The real profiles, from src/lib/site.ts. Delete a row in the Studio to
+    // hide that icon; re-seeding puts it back.
+    socialLinks: socialLinks.map((l) => ({ platform: l.platform, url: l.url })),
 
     navLinks: navLinks.map((l) => link(l.label, l.href)),
     navPrimaryCta: link("Book a Call", "/contact#book"),
-    navSecondaryCta: link("Send an enquiry", "/contact"),
     footerCompanyLinks: footerColumns[1].links.map((l) => link(l.label, l.href)),
     footerLegalLinks: footerColumns[2].links.map((l) => link(l.label, l.href)),
   });

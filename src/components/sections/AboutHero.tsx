@@ -3,30 +3,29 @@ import { Decor } from "@/components/ui/Decor";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { AboutHeroStage } from "@/components/motion/stages/AboutHeroStage";
 import { MaskHeading } from "@/components/motion/MaskHeading";
-import { CountUp } from "@/components/motion/CountUp";
 
 /**
  * Figma: "HF · A01 About — Hero" (96:138).
  *
  * A 620×760 photo bleeds off the left edge (x = −150) with rounded right
  * corners only; the copy column sits to its right.
+ *
+ * The frame put a row of headline figures under the copy. Without them the
+ * column ran out halfway down a 1020px frame and left the right-hand side
+ * empty, so the mission and vision cards moved up here from the section below
+ * — they carry the same "who we are" weight and they fill the column to the
+ * foot of the photo.
  */
-
-const CREDENTIALS = [
-  { value: 10, unit: "yrs", label: "In the UK private market" },
-  { value: 10, unit: "+", label: "Consultants supported" },
-  { value: 98, unit: "%", label: "Debt collection rate" },
-] as const;
 
 export function AboutHero() {
   return (
     <section className="relative overflow-x-clip bg-off-white">
      <AboutHeroStage>
-      <div className="relative mx-auto max-w-frame lg:min-h-[1020px]">
+      <div className="relative mx-auto max-w-frame lg:min-h-[870px]">
         {/* -- Photo bleeding off the left edge ---------------------- */}
         <div
           data-anim="photo"
-          className="relative h-[320px] overflow-hidden rounded-r-[36px] shadow-lg sm:h-[420px] lg:absolute lg:left-[-10.42%] lg:top-[150px] lg:h-[760px] lg:w-[43.06%]"
+          className="relative h-[320px] overflow-hidden rounded-r-[36px] shadow-lg sm:h-[420px] lg:absolute lg:left-[-10.42%] lg:top-[150px] lg:h-[660px] lg:w-[43.06%]"
           style={{
             backgroundImage:
               "linear-gradient(129deg, rgb(94, 144, 137) 14.286%, rgb(51, 96, 91) 53.571%, rgb(16, 31, 29) 85.714%)",
@@ -66,24 +65,33 @@ export function AboutHero() {
             efficient and easier to manage.
           </p>
 
-          <dl className="mt-[60px] flex flex-wrap gap-x-[40px] gap-y-8">
-            {CREDENTIALS.map((credential) => (
-              <div key={credential.label} data-anim="credential" data-reveal="" className="flex flex-col gap-[6px]">
-                <dt className="flex items-start gap-[3px]">
-                  <CountUp
-                    value={credential.value}
-                    className="text-[34px] font-bold leading-none tracking-[-0.03em] text-ink"
-                  />
-                  <span className="pt-[3px] text-[13px] font-semibold leading-none text-sage">
-                    {credential.unit}
-                  </span>
-                </dt>
-                <dd className="max-w-[150px] text-[13px] font-medium leading-[1.45] text-ink-muted">
-                  {credential.label}
-                </dd>
-              </div>
-            ))}
-          </dl>
+          {/* -- Mission and vision ---------------------------------- */}
+          <div className="mt-[48px] grid gap-[20px] xl:grid-cols-2">
+            <div
+              data-anim="card"
+              data-reveal=""
+              className="flex flex-col justify-center gap-[14px] rounded-[26px] bg-good-bg px-[32px] py-[36px]"
+            >
+              <Eyebrow className="tracking-[0.12em]">Our mission</Eyebrow>
+              <p className="text-[19px] font-semibold leading-[1.4] tracking-[-0.01em] text-ink">
+                Bring transparent, dependable practice management and peace of mind to every
+                healthcare professional.
+              </p>
+            </div>
+
+            <div
+              data-anim="card"
+              data-reveal=""
+              className="flex flex-col justify-center gap-[14px] rounded-[26px] bg-sage px-[32px] py-[36px] shadow-md"
+            >
+              <Eyebrow tone="mint" className="tracking-[0.1em] text-mint-light">
+                Our vision
+              </Eyebrow>
+              <p className="text-[19px] font-semibold leading-[1.4] tracking-[-0.01em] text-white">
+                To become the UK’s most trusted partner for private practice management.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
      </AboutHeroStage>

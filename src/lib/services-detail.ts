@@ -57,7 +57,7 @@ export type ServicePanel = {
 export const servicePanels: ServicePanel[] = [
   {
     slug: "practice-management",
-    eyebrow: "01 / 08  ·  Practice management & operations",
+    eyebrow: "01 / 08  ·  Practice Management Operations",
     title: "The day-to-day of running the practice, handled.",
     intro:
       "Day-to-day administrative, secretarial and patient coordination support that keeps your practice running smoothly.",
@@ -98,7 +98,7 @@ export const servicePanels: ServicePanel[] = [
   },
   {
     slug: "medical-referrals",
-    eyebrow: "02 / 08  ·  Medical referral management",
+    eyebrow: "02 / 08  ·  Medical Referral",
     title: "No referral slips through.",
     intro:
       "Every referral logged, acknowledged and followed through to a booked appointment — whoever it came from.",
@@ -138,7 +138,7 @@ export const servicePanels: ServicePanel[] = [
   },
   {
     slug: "billing-collection",
-    eyebrow: "03 / 08  ·  Billing & collection",
+    eyebrow: "03 / 08  ·  Medical Billing & Collections",
     title: "Your money stays yours.",
     intro:
       "Accurate billing, proactive payment follow-up and live financial reporting keep you informed and in control.",
@@ -178,7 +178,7 @@ export const servicePanels: ServicePanel[] = [
   },
   {
     slug: "international-patients",
-    eyebrow: "04 / 08  ·  Embassy & international patients",
+    eyebrow: "04 / 08  ·  Embassy Registration & Onboarding",
     title: "International patients, without the paperwork.",
     intro:
       "End-to-end support for embassy registration, billing, obtaining letters of guarantee and international patient arrangements.",
@@ -218,7 +218,7 @@ export const servicePanels: ServicePanel[] = [
   },
   {
     slug: "medical-coding",
-    eyebrow: "05 / 08  ·  Medical coding & reporting",
+    eyebrow: "05 / 08  ·  Medical Coding & Reporting",
     title: "Coded right the first time.",
     intro:
       "Specialist coding and submission support for accurate billing, compliant records and reliable reporting.",
@@ -298,7 +298,7 @@ export const servicePanels: ServicePanel[] = [
   },
   {
     slug: "marketing-growth",
-    eyebrow: "07 / 08  ·  Marketing & digital growth",
+    eyebrow: "07 / 08  ·  Marketing & Digital Growth",
     title: "Grow at a pace that feels right.",
     intro:
       "We help the right patients find and understand your services through our tailored programmes.",

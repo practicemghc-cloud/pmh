@@ -242,7 +242,27 @@
 }
 
 .wa-ring {
+  /* Invisible at rest: the keyframes supply the opacity while they run, and
+     this is what shows through the moment they are switched off. */
+  opacity: 0;
   animation: wa-ring 3.6s cubic-bezier(0.16, 0.84, 0.44, 1) infinite;
+}
+
+/*
+ * Silence the pulse while the button is expanded.
+ *
+ * Fading the rings out with a transition did nothing: an animation's value
+ * wins over a transitioned one, so they carried on expanding out of the
+ * collapsed disc's corner behind the pill. The animation has to stop.
+ */
+.wa-dock:hover .wa-ring,
+.wa-dock:focus-within .wa-ring {
+  animation: none;
+}
+
+.wa-dock:hover .wa-breathe,
+.wa-dock:focus-within .wa-breathe {
+  animation: none;
 }
 
 /* The second ring trails the first by half a cycle, so the pulse never stops

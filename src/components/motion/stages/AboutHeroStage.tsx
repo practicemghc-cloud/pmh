@@ -20,7 +20,7 @@ export function AboutHeroStage({ children }: { children: React.ReactNode }) {
     });
     tl.from(pick("photo-inner"), { scale: 1.14, duration: 1.6, ease: "power3.out" }, 0);
     appear(tl, pick("copy"), { opacity: 0, y: 26, stagger: 0.1 }, 0.35);
-    appear(tl, pick("credential"), { opacity: 0, y: 18, stagger: 0.09 }, 0.85);
+    appear(tl, pick("card"), { opacity: 0, y: 26, stagger: 0.12, duration: 0.9 }, 0.85);
 
     gsap.to(pick("photo"), {
       y: 48,

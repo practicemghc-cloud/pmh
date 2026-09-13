@@ -31,7 +31,7 @@ import { CountUp } from "@/components/motion/CountUp";
 const STATS = [
   { value: 98, unit: "%", label: "Debt collection rate" },
   { value: 10, unit: "+", label: "Consultants supported" },
-  { value: 10, unit: "yrs", label: "In the UK private market" },
+  { value: 10, unit: "yrs experience", label: "In the UK private market" },
 ] as const;
 
 /** "Every payment goes straight to you" — Figma 88:1789. */
