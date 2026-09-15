@@ -55,20 +55,23 @@ function InvoiceView() {
         </span>
       </div>
 
+      {/* `min-w-0` on both: a flex item won't shrink below its content, and
+          "£128,400" at 24px is wider than half a phone-width card, so the
+          tiles pushed out through the panel's right edge. */}
       <div className="flex gap-[12px]">
-        <div className="flex flex-1 flex-col gap-[4px] rounded-[14px] bg-good-bg px-[16px] py-[14px]">
+        <div className="flex min-w-0 flex-1 flex-col gap-[4px] rounded-[14px] bg-good-bg px-[14px] py-[14px] sm:px-[16px]">
           <p className="text-[11px] font-semibold uppercase leading-[1.2] tracking-[0.08em] text-ink-muted">
             Collected
           </p>
-          <p className="text-[24px] font-bold leading-[1.1] tracking-[-0.02em] text-sage-dark">
+          <p className="text-[20px] font-bold leading-[1.1] tracking-[-0.02em] text-sage-dark sm:text-[24px]">
             £128,400
           </p>
         </div>
-        <div className="flex flex-1 flex-col gap-[4px] rounded-[14px] bg-surface-2 px-[16px] py-[14px]">
+        <div className="flex min-w-0 flex-1 flex-col gap-[4px] rounded-[14px] bg-surface-2 px-[14px] py-[14px] sm:px-[16px]">
           <p className="text-[11px] font-semibold uppercase leading-[1.2] tracking-[0.08em] text-ink-muted">
             Outstanding
           </p>
-          <p className="text-[24px] font-bold leading-[1.1] tracking-[-0.02em] text-ink">£42,180</p>
+          <p className="text-[20px] font-bold leading-[1.1] tracking-[-0.02em] text-ink sm:text-[24px]">£42,180</p>
         </div>
       </div>
 

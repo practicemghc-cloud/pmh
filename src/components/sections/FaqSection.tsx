@@ -15,20 +15,31 @@ import { ToggleIcon } from "@/components/motion/ToggleIcon";
  * Figma: "HF · 06 Home — FAQs" (88:2209) — a 420px intro column carrying the
  * "talk to a person" card, beside a flexible accordion. The frame shows the
  * first two rows expanded, which is the default here.
+ *
+ * Only the first `initialCount` questions are shown: the full set runs to
+ * twelve, which turned the section into most of a screen of closed rows before
+ * anything else on the page got a look in. The rest are a click away.
  */
 export function FaqSection({
   heading = "Questions consultants ask",
   intro = "If yours isn’t here, the fastest way to an answer is a short call. There’s no obligation and no script.",
   items,
   defaultOpen = [0, 1],
+  initialCount = 6,
 }: {
   heading?: string;
   intro?: string;
   items: Faq[];
   defaultOpen?: number[];
+  /** Rows shown before "show more". Pass `Infinity` to list them all. */
+  initialCount?: number;
 }) {
   const [open, setOpen] = useState<number[]>(defaultOpen);
+  const [expanded, setExpanded] = useState(false);
   const baseId = useId();
+
+  const visible = expanded ? items : items.slice(0, initialCount);
+  const hidden = items.length - visible.length;
 
   const toggle = (index: number) =>
     setOpen((current) =>
@@ -86,7 +97,7 @@ export function FaqSection({
 
         {/* -- Accordion ---------------------------------------------- */}
         <div className="flex w-full flex-1 flex-col gap-[12px]">
-          {items.map((item, index) => {
+          {visible.map((item, index) => {
             const isOpen = open.includes(index);
             const panelId = `${baseId}-panel-${index}`;
             const buttonId = `${baseId}-button-${index}`;
@@ -138,6 +149,18 @@ export function FaqSection({
               </div>
             );
           })}
+
+          {(hidden > 0 || expanded) && (
+            <div className="pt-[8px]">
+              <Button
+                variant="secondary"
+                trailingIcon={expanded ? "minus" : "plus"}
+                onClick={() => setExpanded((current) => !current)}
+              >
+                {expanded ? "Show fewer questions" : `Show ${hidden} more questions`}
+              </Button>
+            </div>
+          )}
         </div>
       </div>
      </FaqStage>

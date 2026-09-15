@@ -17,7 +17,12 @@ const MESSAGE = `Hello ${site.name}, I'd like to ask about your practice managem
 
 export function WhatsAppButton() {
   return (
-    <div className="wa-dock fixed bottom-6 right-6 z-[60] print:hidden md:bottom-8 md:right-8">
+    <div
+      // `safe-area-inset-bottom` keeps the disc clear of a phone's home
+      // indicator and the browser's own bottom bar, which was cutting it off.
+      style={{ bottom: "calc(env(safe-area-inset-bottom, 0px) + 1.5rem)" }}
+      className="wa-dock fixed right-6 z-[60] print:hidden md:right-8"
+    >
       {/* Expanding rings — behind the button, never clickable. */}
       <span
         aria-hidden

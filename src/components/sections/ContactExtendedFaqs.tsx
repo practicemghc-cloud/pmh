@@ -5,6 +5,7 @@ import Link from "next/link";
 import { cn } from "@/lib/cn";
 import { Icon } from "@/components/ui/Icon";
 import { Eyebrow } from "@/components/ui/Eyebrow";
+import { Button } from "@/components/ui/Button";
 import type { FaqCategory } from "@/lib/faqs";
 import { FaqStage } from "@/components/motion/stages/FaqStage";
 import { Collapse } from "@/components/motion/Collapse";
@@ -16,7 +17,13 @@ import { ToggleIcon } from "@/components/motion/ToggleIcon";
  * "ask us directly" card below.
  *
  * Search filters across every topic, matching the field's intent in the design.
+ *
+ * Long lists are cut to `VISIBLE_STEP` with a "show more" under them — the
+ * same six-row cut the home and About accordions use, so a topic with a lot in
+ * it (or a broad search) opens at a readable length.
  */
+
+const VISIBLE_STEP = 6;
 export function ContactExtendedFaqs({
   categories,
   eyebrow = "Everything else",
@@ -31,6 +38,12 @@ export function ContactExtendedFaqs({
   const [activeCategory, setActiveCategory] = useState(0);
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState<string[]>([categories[0].questions[0]?.question ?? ""]);
+  /*
+   * Which list the "show more" is expanded for, rather than a plain boolean:
+   * switching topic or typing a search changes the key, which collapses the
+   * new list back to six without an effect to reset it.
+   */
+  const [expandedFor, setExpandedFor] = useState<string | null>(null);
 
   const searching = query.trim().length > 0;
 
@@ -41,6 +54,11 @@ export function ContactExtendedFaqs({
       .flatMap((category) => category.questions)
       .filter((faq) => faq.question.toLowerCase().includes(needle));
   }, [activeCategory, categories, query, searching]);
+
+  const listKey = searching ? `search:${query.trim().toLowerCase()}` : categories[activeCategory].name;
+  const expanded = expandedFor === listKey;
+  const shown = expanded ? visible : visible.slice(0, VISIBLE_STEP);
+  const hidden = visible.length - shown.length;
 
   const toggle = (question: string) =>
     setOpen((current) =>
@@ -113,7 +131,7 @@ export function ContactExtendedFaqs({
           </nav>
 
           <div className="flex flex-1 flex-col gap-[10px]">
-            {visible.map((faq) => {
+            {shown.map((faq) => {
               const isOpen = open.includes(faq.question);
               return (
                 <div
@@ -148,6 +166,18 @@ export function ContactExtendedFaqs({
                 </div>
               );
             })}
+
+            {(hidden > 0 || expanded) && (
+              <div className="pt-[6px]">
+                <Button
+                  variant="secondary"
+                  trailingIcon={expanded ? "minus" : "plus"}
+                  onClick={() => setExpandedFor(expanded ? null : listKey)}
+                >
+                  {expanded ? "Show fewer questions" : `Show ${hidden} more questions`}
+                </Button>
+              </div>
+            )}
 
             {visible.length === 0 && (
               <p className="rounded-[20px] bg-white px-[32px] py-[26px] text-[16px] leading-[1.68] text-ink-muted">

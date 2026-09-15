@@ -102,11 +102,19 @@ function SystemsChoice() {
 
   return (
     <>
-      <div aria-hidden className="flex w-full gap-[4px] rounded-full bg-surface-2 p-[5px]">
-        <div className="flex flex-1 items-center justify-center rounded-full bg-white py-[11px] text-[13px] font-semibold leading-[1.2] text-ink">
+      {/*
+        Stacks below `sm`. Side by side, each label wrapped to two lines on a
+        phone and burst out of its pill; a pill-shaped control only works while
+        its label is one line.
+      */}
+      <div
+        aria-hidden
+        className="flex w-full flex-col gap-[4px] rounded-[20px] bg-surface-2 p-[5px] sm:flex-row sm:rounded-full"
+      >
+        <div className="flex flex-1 items-center justify-center rounded-[16px] bg-white px-[10px] py-[11px] text-center text-[13px] font-semibold leading-[1.2] text-ink sm:rounded-full">
           Keep your systems
         </div>
-        <div className="flex flex-1 items-center justify-center rounded-full py-[11px] text-[13px] font-semibold leading-[1.2] text-ink-muted">
+        <div className="flex flex-1 items-center justify-center rounded-[16px] px-[10px] py-[11px] text-center text-[13px] font-semibold leading-[1.2] text-ink-muted sm:rounded-full">
           Let us set you up
         </div>
       </div>
