@@ -12,6 +12,7 @@ export const aboutPage = defineType({
     { name: "cascade", title: "2. Behind the scenes" },
     { name: "statement", title: "3. That's where PMG comes in" },
     { name: "purpose", title: "4. Purpose & vision" },
+    { name: "adviser", title: "5. UK Medical Adviser" },
   ],
   fields: [
     /* -- 1. Hero ------------------------------------------------------ */
@@ -111,6 +112,39 @@ export const aboutPage = defineType({
         defineField({ name: "eyebrow", title: "Small label", type: "string" }),
         defineField({ name: "body", title: "Statement", type: "text", rows: 3 }),
       ],
+    }),
+
+    /* -- 5. UK Medical Adviser ------------------------------------------ */
+    defineField({
+      name: "adviserEyebrow",
+      title: "Small label",
+      type: "string",
+      group: "adviser",
+      description: "Also shown on the badge over the photo.",
+    }),
+    defineField({ name: "adviserName", title: "Name", type: "string", group: "adviser" }),
+    defineField({
+      name: "adviserRole",
+      title: "Green bold line",
+      type: "string",
+      group: "adviser",
+      description: "Their title, under the name.",
+    }),
+    defineField({ name: "adviserBody", title: "Paragraph", type: "text", rows: 5, group: "adviser" }),
+    defineField({
+      name: "adviserCredentials",
+      title: "Ticked list",
+      type: "array",
+      of: [{ type: "string" }],
+      group: "adviser",
+      validation: (rule) => rule.max(4).warning("Designed for three."),
+    }),
+    defineField({
+      name: "adviserPhoto",
+      title: "Portrait",
+      type: "imageWithAlt",
+      group: "adviser",
+      description: "A portrait (upright) photo works best — the top of the photo is kept in frame.",
     }),
   ],
   preview: { prepare: () => ({ title: "About page" }) },

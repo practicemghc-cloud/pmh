@@ -5,7 +5,7 @@ import { AboutPurpose } from "@/components/sections/AboutPurpose";
 import { AboutAdviser } from "@/components/sections/AboutAdviser";
 import { FaqSection } from "@/components/sections/FaqSection";
 import { ClosingCta } from "@/components/sections/ClosingCta";
-import { getGeneralFaqs, getClosingCta } from "../../../../sanity/content";
+import { getGeneralFaqs, getClosingCta, getAboutAdviser } from "../../../../sanity/content";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -15,13 +15,17 @@ export const metadata: Metadata = {
 
 /** Figma page frame: "About — High fidelity" (90:78). */
 export default async function AboutPage() {
-  const [faqs, cta] = await Promise.all([getGeneralFaqs(), getClosingCta()]);
+  const [faqs, cta, adviser] = await Promise.all([
+    getGeneralFaqs(),
+    getClosingCta(),
+    getAboutAdviser(),
+  ]);
 
   return (
     <>
       <AboutHero />
       <AboutPurpose />
-      <AboutAdviser />
+      <AboutAdviser {...adviser} />
       {/* The dark section reads as the turn towards the close, so it runs
           last of the story sections rather than second. */}
       <AboutBehindTheScenes />

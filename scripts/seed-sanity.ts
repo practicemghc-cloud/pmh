@@ -18,6 +18,7 @@ import { site, navLinks, footerColumns, services, socialLinks, ctaReassurance } 
 import { homeFaqs, contactFaqCategories } from "../src/lib/faqs";
 import { clientStories } from "../src/lib/stories";
 import { servicePanels } from "../src/lib/services-detail";
+import { adviser } from "../src/lib/adviser";
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production";
@@ -105,6 +106,7 @@ async function run() {
   const aboutHero = await image("about-consultation-lounge.webp", "Two colleagues in conversation in a bright consultation lounge");
   const aboutWork = await image("about-pmg-at-work.webp", "The PMG team at work in their office");
   const aboutRoom = await image("about-purpose-radiology-review.webp", "Clinicians reviewing radiographs together on a light box");
+  const adviserPhoto = await image(basename(adviser.photo), adviser.photoAlt);
 
   const docs: Record<string, unknown>[] = [];
 
@@ -377,6 +379,13 @@ async function run() {
       eyebrow: "OUR VISION",
       body: "To become the UK’s most trusted partner for private practice management.",
     },
+
+    adviserEyebrow: adviser.eyebrow,
+    adviserName: adviser.name,
+    adviserRole: adviser.role,
+    adviserBody: adviser.body,
+    adviserCredentials: adviser.credentials,
+    adviserPhoto,
   });
 
   docs.push({

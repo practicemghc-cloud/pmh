@@ -1,3 +1,5 @@
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import { sanityFetch } from "./client";
 import {
   siteSettingsQuery,
@@ -6,6 +8,7 @@ import {
   generalFaqsQuery,
   contactFaqsQuery,
   clientStoriesQuery,
+  aboutAdviserQuery,
 } from "./queries";
 
 import {
@@ -19,6 +22,7 @@ import {
 import { homeFaqs, contactFaqCategories, type Faq } from "@/lib/faqs";
 import { clientStories as defaultStories, type ClientStory } from "@/lib/stories";
 import { servicePanels as defaultPanels } from "@/lib/services-detail";
+import { adviser as defaultAdviser, type Adviser } from "@/lib/adviser";
 import type { IconName } from "@/components/ui/Icon";
 
 /**
@@ -35,6 +39,15 @@ import type { IconName } from "@/components/ui/Icon";
 export type SocialPlatform = "facebook" | "instagram" | "linkedin" | "x" | "youtube";
 
 export type SocialLink = { platform: SocialPlatform; url: string };
+
+/** Whether a `/public` asset actually shipped — checked once per path. */
+const localFiles = new Map<string, boolean>();
+const hasLocalFile = (publicPath: string) => {
+  if (!localFiles.has(publicPath)) {
+    localFiles.set(publicPath, existsSync(join(process.cwd(), "public", publicPath)));
+  }
+  return localFiles.get(publicPath)!;
+};
 
 /** Returns the CMS value only when it's actually present. */
 const pick = <T,>(value: T | null | undefined, fallback: T): T =>
@@ -205,6 +218,33 @@ export async function getContactFaqs() {
 export async function getClientStories(): Promise<ClientStory[]> {
   const cms = await sanityFetch<ClientStory[]>(clientStoriesQuery, {}, ["clientStory"]);
   return [...pickList(cms, defaultStories)];
+}
+
+/* -- About: UK Medical Adviser ------------------------------------------- */
+
+export async function getAboutAdviser(): Promise<Adviser> {
+  const cms = await sanityFetch<{
+    adviserEyebrow?: string;
+    adviserName?: string;
+    adviserRole?: string;
+    adviserBody?: string;
+    adviserCredentials?: string[];
+    adviserPhoto?: { url?: string; alt?: string };
+  }>(aboutAdviserQuery, {}, ["aboutPage"]);
+
+  const name = pick(cms?.adviserName, defaultAdviser.name);
+  const photo = cms?.adviserPhoto?.url;
+
+  return {
+    eyebrow: pick(cms?.adviserEyebrow, defaultAdviser.eyebrow),
+    name,
+    role: pick(cms?.adviserRole, defaultAdviser.role),
+    body: pick(cms?.adviserBody, defaultAdviser.body),
+    credentials: pickList(cms?.adviserCredentials, defaultAdviser.credentials),
+    // A CMS portrait wins; otherwise the one that ships in /public, if present.
+    photo: photo ?? (hasLocalFile(defaultAdviser.photo) ? defaultAdviser.photo : null),
+    photoAlt: photo ? pick(cms?.adviserPhoto?.alt, name) : defaultAdviser.photoAlt,
+  };
 }
 
 /* -- Service panels (the Services page) ------------------------------------ */

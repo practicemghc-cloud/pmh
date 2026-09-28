@@ -102,6 +102,13 @@ export const aboutPageQuery = defineQuery(`
   }
 `);
 
+export const aboutAdviserQuery = defineQuery(`
+  *[_type == "aboutPage"][0]{
+    adviserEyebrow, adviserName, adviserRole, adviserBody,
+    adviserCredentials, adviserPhoto${IMAGE}
+  }
+`);
+
 export const servicesPageQuery = defineQuery(`
   *[_type == "servicesPage"][0]{
     eyebrow, heading, body, cta${LINK}
