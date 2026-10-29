@@ -1,25 +1,25 @@
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Icon } from "@/components/ui/Icon";
-import { site, telHref, mailHref } from "@/lib/site";
+import { telHref, mailHref } from "@/lib/site";
 import { ContactForm } from "./ContactForm";
 import { ContactStage } from "@/components/motion/stages/ContactStage";
 import { MaskHeading } from "@/components/motion/MaskHeading";
 import type { IconName } from "@/components/ui/Icon";
+import type { SiteContent } from "../../../sanity/content";
 
 /** Figma: "HF · C01 Contact — Hero + form" (139:843). */
-const DIRECT: { icon: IconName; label: string; value: string; href?: string }[] = [
-  { icon: "phone", label: "Call us", value: site.phone, href: telHref(site.phone) },
-  {
-    icon: "mail",
-    label: "Email us",
-    value: site.email,
-    href: mailHref(site.email),
-  },
-  // Office hours are placeholder values in the design.
-  { icon: "clock", label: "Office hours", value: "[ Mon–Fri, 00:00–00:00 ]" },
-];
+export function ContactHero({ site }: { site: SiteContent["site"] }) {
+  const DIRECT: { icon: IconName; label: string; value: string; href?: string }[] = [
+    { icon: "phone", label: "Call us", value: site.phone, href: telHref(site.phone) },
+    { icon: "mail", label: "Email us", value: site.email, href: mailHref(site.email) },
+    { icon: "clock", label: "Office hours", value: site.officeHours },
+    {
+      icon: "marker-pin",
+      label: "Registered office",
+      value: `${site.companyName}, ${site.registeredOffice}. Company no. ${site.companyNumber}`,
+    },
+  ];
 
-export function ContactHero() {
   return (
     <section className="bg-off-white px-6 pb-[104px] pt-[140px] md:px-10 lg:px-[120px]">
      <ContactStage>
@@ -47,7 +47,7 @@ export function ContactHero() {
               const body = (
                 <>
                   <span className="flex size-[40px] shrink-0 items-center justify-center rounded-[12px] bg-good-bg text-mint">
-                    <Icon name={row.icon} />
+                    <Icon name={row.icon} size={row.icon === "marker-pin" ? 20 : undefined} />
                   </span>
                   <span className="flex flex-1 flex-col gap-[3px]">
                     <dt className="text-[12px] font-semibold leading-[1.4] tracking-[0.06em] text-ink-muted">

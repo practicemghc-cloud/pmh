@@ -119,6 +119,9 @@ async function run() {
     phone: site.phone,
     officeHours: "[ Mon–Fri, 00:00–00:00 ]",
     copyright: site.copyright,
+    companyName: site.legalName,
+    companyNumber: site.companyNumber,
+    registeredOffice: site.registeredOffice,
 
     metaTitle: "PMG Healthcare — Complete Practice Management",
     metaDescription: site.description,

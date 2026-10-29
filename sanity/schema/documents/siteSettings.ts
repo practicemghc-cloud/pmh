@@ -9,6 +9,7 @@ export const siteSettings = defineType({
   icon: CogIcon,
   groups: [
     { name: "brand", title: "Brand & contact", default: true },
+    { name: "company", title: "Company details" },
     { name: "seo", title: "SEO & sharing" },
     { name: "social", title: "Social media" },
     { name: "nav", title: "Navigation" },
@@ -46,6 +47,32 @@ export const siteSettings = defineType({
       group: "brand",
       description: "Shown on the Contact page, e.g. “Mon–Fri, 9:00–17:30”.",
     }),
+
+    /* -- Company details ----------------------------------------------- */
+    defineField({
+      name: "companyName",
+      title: "Registered company name",
+      type: "string",
+      group: "company",
+      description: "Exactly as it appears at Companies House, e.g. “PMG Healthcare Ltd”. Shown in the footer and on the Contact page.",
+    }),
+    defineField({
+      name: "companyNumber",
+      title: "Company number",
+      type: "string",
+      group: "company",
+      description: "The 8-character Companies House number. Shown in the footer and on the Contact page.",
+      validation: (rule) =>
+        rule.regex(/^[A-Z0-9]{8}$/i).warning("Companies House numbers are 8 characters, e.g. 17532835."),
+    }),
+    defineField({
+      name: "registeredOffice",
+      title: "Registered office address",
+      type: "string",
+      group: "company",
+      description: "On one line, separated by commas, e.g. “72 Charlmont Road, London, England, SW17 9AH”.",
+    }),
+
     defineField({
       name: "copyright",
       title: "Copyright line",

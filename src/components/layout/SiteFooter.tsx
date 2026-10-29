@@ -14,6 +14,9 @@ type FooterSite = {
   email: string;
   phone: string;
   copyright: string;
+  companyName: string;
+  companyNumber: string;
+  registeredOffice: string;
 };
 
 type FooterColumn = {
@@ -125,7 +128,14 @@ export function SiteFooter({
         <div className="flex flex-col gap-[24px]">
           <div className="h-px w-full bg-white/12" />
           <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-            <p className="text-[14px] leading-[1.5] text-pastel">{site.copyright}</p>
+            <div className="flex flex-col gap-[6px]">
+              <p className="text-[14px] leading-[1.5] text-pastel">{site.copyright}</p>
+              {/* Companies Act: registered name, number and office on the site. */}
+              <p className="text-[13px] leading-[1.6] text-pastel/70">
+                {site.companyName} · Company no. {site.companyNumber} · Registered office:{" "}
+                {site.registeredOffice}
+              </p>
+            </div>
             <a
               href="#top"
               className="flex items-center gap-[8px] text-[14px] font-medium leading-[1.5] text-white transition-colors hover:text-mint-light"

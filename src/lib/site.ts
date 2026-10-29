@@ -19,16 +19,16 @@ const PHONE = "+44 204 5842 522";
 export const site = {
   name: "PMG",
   wordmarkSub: "HEALTHCARE",
-  legalName: "Practice Management Group Ltd",
+  // As registered at Companies House.
+  legalName: "PMG Healthcare Ltd",
   description:
     "Complete practice management for independent consultants and private healthcare providers across the UK.",
   email: "info@pmghealthcare.co.uk",
   phone: PHONE,
   whatsapp: PHONE,
-  companyNumber: "[ 00000000 ]",
-  // The registration line comes back once there is a real company number to
-  // put in it — "company no. [ 00000000 ]" in a live footer reads as a bug.
-  copyright: "© 2026 Practice Management Group Ltd",
+  companyNumber: "17532835",
+  registeredOffice: "72 Charlmont Road, London, England, SW17 9AH",
+  copyright: "© 2026 PMG Healthcare Ltd",
 } as const;
 
 /**

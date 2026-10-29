@@ -15,6 +15,7 @@ const LINK = `{ label, href }`;
 export const siteSettingsQuery = defineQuery(`
   *[_type == "siteSettings"][0]{
     description, email, phone, officeHours, copyright,
+    companyName, companyNumber, registeredOffice,
     metaTitle, metaDescription, keywords,
     shareImage{ "url": asset->url, alt },
     socialLinks[]{ platform, url },

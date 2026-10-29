@@ -69,6 +69,9 @@ export async function getSiteContent() {
       phone?: string;
       officeHours?: string;
       copyright?: string;
+      companyName?: string;
+      companyNumber?: string;
+      registeredOffice?: string;
       metaTitle?: string;
       metaDescription?: string;
       keywords?: string[];
@@ -112,6 +115,9 @@ export async function getSiteContent() {
       phone: pick(settings?.phone, site.phone),
       officeHours: pick(settings?.officeHours, "[ Mon–Fri, 00:00–00:00 ]"),
       copyright: pick(settings?.copyright, site.copyright),
+      companyName: pick(settings?.companyName, site.legalName),
+      companyNumber: pick(settings?.companyNumber, site.companyNumber),
+      registeredOffice: pick(settings?.registeredOffice, site.registeredOffice),
     },
     seo: {
       // Falls back through the chain an editor would expect: the dedicated SEO
